@@ -5,7 +5,7 @@ project(PendulumSimulation)
 # Windows specific config
 IF (WIN32)
     # Include local sfml cmake config
-    set(SFML_DIR "E:/Programmieren/c++/projects-gitHub/SFML/pendulum-simulation1/SFML-2.5.1/lib/cmake/SFML")
+    set(SFML_DIR "SFML-2.5.1/lib/cmake/SFML")
     # Link sfml statically (Optional)
     set(SFML_STATIC_LIBRARIES TRUE)
 ENDIF()
