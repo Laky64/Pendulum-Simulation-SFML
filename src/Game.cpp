@@ -14,7 +14,7 @@ void Game::initWindow()
 {
     this->videoMode.width = 1600;
     this->videoMode.height = 900;
-    this->window = new sf::RenderWindow(this->videoMode, "Main", sf::Style::Close | sf::Style::Resize);
+    this->window = new sf::RenderWindow(this->videoMode, "Main", sf::Style::Close);
     this->window->setFramerateLimit(165);
 }
 
