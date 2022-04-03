@@ -1,9 +1,7 @@
 #include "../include/PhysicsObject.h"
 #include <iostream>
 #include <math.h>
-//Constructors / Destructors
-
-
+// Constructors / Destructors
 
 PhysicsObject::PhysicsObject(float radius, float gravitationalAcceleration, float mass)
 {
@@ -13,9 +11,7 @@ PhysicsObject::PhysicsObject(float radius, float gravitationalAcceleration, floa
 	this->setColor(color);
 	this->setRadius(radius);
 
-
-
-	this->lineVectorG[0].color = sf::Color(255 ,0 ,0 ,255);
+	this->lineVectorG[0].color = sf::Color(255, 0, 0, 255);
 	this->lineVectorG[1].color = sf::Color(255, 0, 0, 255);
 
 	this->lineVectorZP[0].color = sf::Color(0, 255, 0, 255);
@@ -27,29 +23,24 @@ PhysicsObject::PhysicsObject(float radius, float gravitationalAcceleration, floa
 	this->connectionTofixPoint[0].color = sf::Color(255, 255, 255, 255);
 	this->connectionTofixPoint[1].color = sf::Color(255, 255, 255, 255);
 
-	this->connectionTofixPoint[0].position = sf::Vector2f(fixPoint.x,fixPoint.y);
-
+	this->connectionTofixPoint[0].position = sf::Vector2f(fixPoint.x, fixPoint.y);
 }
-
 
 PhysicsObject::~PhysicsObject()
 {
-	
 }
 
+// functions
 
-
-//functions
-
-void PhysicsObject::renderObject(sf::RenderWindow* window)
+void PhysicsObject::renderObject(sf::RenderWindow *window)
 {
-	//Connection
+	// Connection
 	window->draw(connectionTofixPoint, 2, sf::Lines);
 
-	//Object
+	// Object
 	window->draw(this->object);
 
-	//Forces
+	// Forces
 	window->draw(lineVectorG, 2, sf::Lines);
 	window->draw(lineVectorZP, 2, sf::Lines);
 	window->draw(lineVectorR, 2, sf::Lines);
@@ -58,56 +49,52 @@ void PhysicsObject::renderObject(sf::RenderWindow* window)
 void PhysicsObject::updatePendulum()
 {
 
-	//sets the lenght of the object back to its original lenght to avoid simulation errors
+	// sets the lenght of the object back to its original lenght to avoid simulation errors
 
-	//lenght = sqrt(pow((this->fixPoint.x - (this->Position.x + this->radius)), 2) + pow(abs(this->fixPoint.y - (this->Position.y + this->radius)), 2));
-	//calculate angle
-	this->alpha = atan((this->fixPoint.x - (this->Position.x  + this->radius)) / abs(this->fixPoint.y - (this->Position.y + this->radius)));
-	//calc Energy
+	// lenght = sqrt(pow((this->fixPoint.x - (this->Position.x + this->radius)), 2) + pow(abs(this->fixPoint.y - (this->Position.y + this->radius)), 2));
+	// calculate angle
+	this->alpha = atan((this->fixPoint.x - (this->Position.x + this->radius)) / abs(this->fixPoint.y - (this->Position.y + this->radius)));
+	// calc Energy
 	this->height = (this->lenght * (1 - cos(this->alpha)));
 
 	this->Epot = height * this->G;
 
 	this->Ekin = this->Emax - this->Epot;
-	Emax -= 0.05f;
-	if (Emax <= 0) {
+	// Emax -= 0.05f;
+	if (Emax <= 0)
+	{
 		Emax = 0;
 	}
-	std::cout << Epot + Ekin << ", DIR:" << (alpha/abs(alpha)) << "\n";
+	std::cout << Epot + Ekin << ", DIR:" << (alpha / abs(alpha)) << "\n";
 
-	if (lround(initialHeight*10) == lround(height*10)) {
+	if (lround(initialHeight * 10) == lround(height * 10))
+	{
 		Velocity.x = 0;
 		Velocity.y = 0;
-		
-;	}
-	//this->VelocityAmount = pow(sqrt(pow(this->Velocity.x, 2) + pow(this->Velocity.y, 2)), 2);	
 
+		;
+	}
+	// this->VelocityAmount = pow(sqrt(pow(this->Velocity.x, 2) + pow(this->Velocity.y, 2)), 2);
 
 	this->VelocityAmount = 2 * this->Ekin;
 
 	this->R = this->G * cos(this->alpha);
 	this->F = -this->G * cos(this->alpha) * 0.05f;
-	this->ZP = VelocityAmount /this->lenght;
-	this->setAcceleration( sin(this->alpha) * (R + ZP), -cos(this->alpha) * (abs(R) + abs(ZP)));
+	this->ZP = VelocityAmount / this->lenght;
+	this->setAcceleration(sin(this->alpha) * (R + ZP), -cos(this->alpha) * (abs(R) + abs(ZP)));
 
-
-
-	//update line Positions
-	this->lineVectorG[0].position = sf::Vector2f(this->Position.x + this->radius + 15, this->Position.y + this->radius + this->G*1000);
+	// update line Positions
+	this->lineVectorG[0].position = sf::Vector2f(this->Position.x + this->radius + 15, this->Position.y + this->radius + this->G * 1000);
 	this->lineVectorZP[0].position = sf::Vector2f(this->Position.x + this->radius + sin(this->alpha) * ZP * 1000 + 25, this->Position.y + this->radius - cos(this->alpha) * abs(ZP) * 1000);
-	this->lineVectorR[0].position = sf::Vector2f(this->Position.x + this->radius + sin(this->alpha) * R * 1000 + 15, this->Position.y + this->radius -cos(this->alpha) * abs(R * 1000));
-	
+	this->lineVectorR[0].position = sf::Vector2f(this->Position.x + this->radius + sin(this->alpha) * R * 1000 + 15, this->Position.y + this->radius - cos(this->alpha) * abs(R * 1000));
+
 	this->lineVectorG[1].position = sf::Vector2f(this->Position.x + this->radius + 15, this->Position.y + this->radius);
 	this->lineVectorZP[1].position = sf::Vector2f(this->Position.x + this->radius + 25, this->Position.y + this->radius);
 	this->lineVectorR[1].position = sf::Vector2f(this->Position.x + this->radius + 15, this->Position.y + this->radius);
 
-	//update Line Position of Connection to FixPoint
+	// update Line Position of Connection to FixPoint
 	this->connectionTofixPoint[1].position = sf::Vector2f(this->Position.x + this->radius, this->Position.y + this->radius);
-
 }
-
-
-
 
 void PhysicsObject::updateObject()
 {
@@ -118,12 +105,10 @@ void PhysicsObject::updateObject()
 	this->Position.x = this->fixPoint.x - this->radius + (sin(alpha) * -this->lenght) + this->Velocity.x;
 	this->Position.y = this->fixPoint.y - this->radius + (cos(abs(alpha)) * this->lenght) + this->Velocity.y;
 	this->object.setPosition(Position.x, Position.y);
-	//std::cout << sqrt(pow((this->fixPoint.x - (this->Position.x + this->radius)), 2) + pow(abs(this->fixPoint.y - (this->Position.y + this->radius)), 2)) << "\n";
-
+	// std::cout << sqrt(pow((this->fixPoint.x - (this->Position.x + this->radius)), 2) + pow(abs(this->fixPoint.y - (this->Position.y + this->radius)), 2)) << "\n";
 }
 
-
-//set
+// set
 
 void PhysicsObject::setRadius(float radius)
 {
@@ -143,7 +128,6 @@ void PhysicsObject::setPosition(float x, float y)
 	this->initialHeight = (this->lenght * (1 - cos(this->alpha)));
 	this->Emax = this->initialHeight * this->G;
 	this->object.setPosition(this->Position);
-
 }
 
 void PhysicsObject::setVelocity(float x, float y)
@@ -158,7 +142,6 @@ void PhysicsObject::setAcceleration(float x, float y)
 	this->Acceleration.y = y;
 }
 
-
 void PhysicsObject::addAcceleration(float x, float y)
 {
 	this->Acceleration.x += x;
@@ -169,13 +152,9 @@ void PhysicsObject::setColor(sf::Color color)
 {
 	this->color = color;
 	this->object.setFillColor(color);
-
 }
 
-
-
-//get
-
+// get
 
 float PhysicsObject::getRadius()
 {
@@ -201,6 +180,3 @@ sf::Color PhysicsObject::getColor()
 {
 	return this->color;
 }
-
-
-
