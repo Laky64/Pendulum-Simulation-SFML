@@ -4,25 +4,20 @@
 #include <iostream>
 #include "../include/Game.h"
 
-
-
 int main()
 {
-    //init GameEngine
+    // init GameEngine
     Game game;
-    
-    //Game loop
-    while (game.running()) 
+
+    // Game loop
+    while (game.running())
     {
-        //Update
+        // Update
         game.update();
 
-        //Render
+        // Render
         game.render();
-
     }
 
     return 0;
 }
-
-

@@ -49,23 +49,13 @@ void PhysicsObject::renderObject(sf::RenderWindow *window)
 void PhysicsObject::updatePendulum()
 {
 
-	// sets the lenght of the object back to its original lenght to avoid simulation errors
-
-	// lenght = sqrt(pow((this->fixPoint.x - (this->Position.x + this->radius)), 2) + pow(abs(this->fixPoint.y - (this->Position.y + this->radius)), 2));
-	// calculate angle
+	// calculate angle and height
 	this->alpha = atan((this->fixPoint.x - (this->Position.x + this->radius)) / abs(this->fixPoint.y - (this->Position.y + this->radius)));
-	// calc Energy
 	this->height = (this->lenght * (1 - cos(this->alpha)));
 
+	// calc Energy
 	this->Epot = height * this->G;
-
 	this->Ekin = this->Emax - this->Epot;
-	// Emax -= 0.05f;
-	if (Emax <= 0)
-	{
-		Emax = 0;
-	}
-	std::cout << Epot + Ekin << ", DIR:" << (alpha / abs(alpha)) << "\n";
 
 	if (lround(initialHeight * 10) == lround(height * 10))
 	{
@@ -74,7 +64,6 @@ void PhysicsObject::updatePendulum()
 
 		;
 	}
-	// this->VelocityAmount = pow(sqrt(pow(this->Velocity.x, 2) + pow(this->Velocity.y, 2)), 2);
 
 	this->VelocityAmount = 2 * this->Ekin;
 
@@ -83,7 +72,7 @@ void PhysicsObject::updatePendulum()
 	this->ZP = VelocityAmount / this->lenght;
 	this->setAcceleration(sin(this->alpha) * (R + ZP), -cos(this->alpha) * (abs(R) + abs(ZP)));
 
-	// update line Positions
+	// update Vector Positions
 	this->lineVectorG[0].position = sf::Vector2f(this->Position.x + this->radius + 15, this->Position.y + this->radius + this->G * 1000);
 	this->lineVectorZP[0].position = sf::Vector2f(this->Position.x + this->radius + sin(this->alpha) * ZP * 1000 + 25, this->Position.y + this->radius - cos(this->alpha) * abs(ZP) * 1000);
 	this->lineVectorR[0].position = sf::Vector2f(this->Position.x + this->radius + sin(this->alpha) * R * 1000 + 15, this->Position.y + this->radius - cos(this->alpha) * abs(R * 1000));
@@ -94,18 +83,23 @@ void PhysicsObject::updatePendulum()
 
 	// update Line Position of Connection to FixPoint
 	this->connectionTofixPoint[1].position = sf::Vector2f(this->Position.x + this->radius, this->Position.y + this->radius);
+
+	this->Position.x = this->fixPoint.x - this->radius + (sin(alpha) * -this->lenght) + this->Velocity.x;
+	this->Position.y = this->fixPoint.y - this->radius + (cos(abs(alpha)) * this->lenght) + this->Velocity.y;
 }
 
 void PhysicsObject::updateObject()
 {
-	this->updatePendulum();
+	a += 1;
 	this->Velocity.y += this->G;
 	this->Velocity.x += this->Acceleration.x;
 	this->Velocity.y += this->Acceleration.y;
-	this->Position.x = this->fixPoint.x - this->radius + (sin(alpha) * -this->lenght) + this->Velocity.x;
-	this->Position.y = this->fixPoint.y - this->radius + (cos(abs(alpha)) * this->lenght) + this->Velocity.y;
+	this->Position.x += this->Velocity.x;
+	this->Position.y += this->Velocity.y;
+
+	// this->updatePendulum();
+
 	this->object.setPosition(Position.x, Position.y);
-	// std::cout << sqrt(pow((this->fixPoint.x - (this->Position.x + this->radius)), 2) + pow(abs(this->fixPoint.y - (this->Position.y + this->radius)), 2)) << "\n";
 }
 
 // set
@@ -127,6 +121,7 @@ void PhysicsObject::setPosition(float x, float y)
 
 	this->initialHeight = (this->lenght * (1 - cos(this->alpha)));
 	this->Emax = this->initialHeight * this->G;
+
 	this->object.setPosition(this->Position);
 }
 

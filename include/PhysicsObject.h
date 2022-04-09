@@ -10,11 +10,6 @@ class PhysicsObject
 {
 private:
 
-public:
-	//Constructors / Destructors
-	PhysicsObject(float radius, float gravitationalAcceleration, float mass);
-	virtual ~PhysicsObject();
-
 	//Variables
 	sf::CircleShape object;
 
@@ -26,29 +21,10 @@ public:
 	sf::Color color;
 	float radius;
 
-	//functions
-	void renderObject(sf::RenderWindow* window);
-	void updateObject();
-	
-	//get
-	float getRadius();
-	sf::Vector2f getPosition();
-	sf::Vector2f getVelocity();
-	sf::Vector2f getAcceleration();
-	sf::Color getColor();
-
-	//set
-	void setRadius(float radius);
-	void setPosition(float x, float y);
-	void setVelocity(float x, float y);
-	void setAcceleration(float x, float y);
-	void addAcceleration(float x, float y);
-	void setColor(sf::Color color);
 
 	//Pendulum
 	void updatePendulum();
-	void resetLenght();
-	const sf::Vector2i fixPoint = sf::Vector2i(700,0);
+	const sf::Vector2i fixPoint = sf::Vector2i(700, 0);
 	float alpha;
 	sf::Vertex lineVectorG[2];
 	sf::Vertex lineVectorZP[2];
@@ -69,6 +45,34 @@ public:
 	float Epot;
 
 	sf::Vector2f startingPosition;
+
+	int a = 0;
+
+public:
+	//Constructors / Destructors
+	PhysicsObject(float radius, float gravitationalAcceleration, float mass);
+	virtual ~PhysicsObject();
+
+
+
+	//functions
+	void renderObject(sf::RenderWindow* window);
+	void updateObject();
+	
+	//get
+	float getRadius();
+	sf::Vector2f getPosition();
+	sf::Vector2f getVelocity();
+	sf::Vector2f getAcceleration();
+	sf::Color getColor();
+
+	//set
+	void setRadius(float radius);
+	void setPosition(float x, float y);
+	void setVelocity(float x, float y);
+	void setAcceleration(float x, float y);
+	void addAcceleration(float x, float y);
+	void setColor(sf::Color color);
 
 
 };

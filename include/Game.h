@@ -8,6 +8,7 @@
 
 #include <list>
 #include "PhysicsObject.h"
+#include "GUI.h"
 /*
 	Game Engine Class
 	Wrapper Class
@@ -22,7 +23,7 @@ private:
 	// PhysicsObjPos
 
 	//Window
-	sf::RenderWindow* window;
+
 	sf::VideoMode videoMode;
 	sf::Event event;
 
@@ -30,27 +31,33 @@ private:
 
 	std::list<PhysicsObject> GameObjectsList = {};
 
+	std::list<GUI::Button> ButtonsList = {};
+
 	//Private functions
 	void pollEvents();
 	void initVariables();
 	void initWindow();
-	void initGameObjects();
+	void initGameObjects();	
+	void initGUI();
 	void updateGameObjects();
+	void updateGUI();
 	void spawnPhysicsObject();
+	const float G = .05f;
+
 public:
 	//Constructors / Destructors
 	Game();
 	virtual ~Game();
 
-	const float G = .05f;
+
 
 	//Accessors
 	const bool running() const;
-
+	sf::RenderWindow* window;
+	sf::Vector2i MousePosition;
 	//Functions
 	
 	void update();
 	void render();
 
-	sf::Vector2i MousePosition;
 };
