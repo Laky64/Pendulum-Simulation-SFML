@@ -8,19 +8,18 @@
 #include <string>
 #include <stdarg.h>
 
-namespace GUI {
-	
-	static class Style {
+namespace GUI
+{
+
+	class Style
+	{
 	public:
 		static std::map<std::string, float> Button(std::initializer_list<std::string> list);
 	};
 
-
-
 	class Button
 	{
 	private:
-
 		sf::Vector2i MousePos;
 		sf::RectangleShape ButtonObject;
 		std::map<std::string, float> style;
@@ -28,26 +27,23 @@ namespace GUI {
 		void changeStyle(std::map<std::string, float> a);
 
 	public:
-		//Constructors / Destructors
+		// Constructors / Destructors
 		Button();
 		virtual ~Button();
 		void update();
-		bool getState();	
-		void render(sf::RenderWindow* window);
-		void setStyle(std::map<std::string,float> a);
+		bool getState();
+		void render(sf::RenderWindow *window);
+		void setStyle(std::map<std::string, float> a);
 		void setHoverStyle(std::map<std::string, float> a);
-		
 	};
-
 
 	class Slider
 	{
 	private:
 		void render();
 
-
 	public:
-		//Constructors / Destructors
+		// Constructors / Destructors
 		Slider();
 		virtual ~Slider();
 		void update();
@@ -55,5 +51,3 @@ namespace GUI {
 	};
 
 }
-
-
