@@ -7,10 +7,12 @@
 #include <map>
 #include <string>
 #include <stdarg.h>
+#include <functional>
+#include "../include/Game.h"
 
-namespace GUI
+static class GUI
 {
-
+public:
 	class Style
 	{
 	public:
@@ -20,21 +22,27 @@ namespace GUI
 	class Button
 	{
 	private:
+		sf::Font font;
+		sf::Text text;
 		sf::Vector2i MousePos;
 		sf::RectangleShape ButtonObject;
 		std::map<std::string, float> style;
 		std::map<std::string, float> HoverStyle;
 		void changeStyle(std::map<std::string, float> a);
+		std::function<void()> OnPressFuntion;
+		bool leftMouseButton;
 
 	public:
 		// Constructors / Destructors
+		void setFunction(std::function<void()> a);
 		Button();
 		virtual ~Button();
-		void update();
+		void update(bool MouseButton);
 		bool getState();
 		void render(sf::RenderWindow *window);
 		void setStyle(std::map<std::string, float> a);
 		void setHoverStyle(std::map<std::string, float> a);
+		void setText(std::string text, sf::Font font, std::map<std::string, float> style);
 	};
 
 	class Slider
@@ -49,5 +57,4 @@ namespace GUI
 		void update();
 		float getValue();
 	};
-
-}
+};

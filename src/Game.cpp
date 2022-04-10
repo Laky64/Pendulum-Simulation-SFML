@@ -11,6 +11,10 @@
 void Game::initVariables()
 {
     this->window = nullptr;
+    if (!font.loadFromFile("font.ttf"))
+    {
+        sf::err() << "Couldn't load font\n";
+    }
 }
 
 void Game::initWindow()
@@ -27,24 +31,46 @@ void Game::initGameObjects()
 
 void Game::initGUI()
 {
-    GUI::Button testButton = GUI::Button();
-    std::map<std::string, float> styleTestButton;
 
-    styleTestButton["ColorR"] = 230;
-    styleTestButton["ColorG"] = 70;
-    styleTestButton["ColorB"] = 70;
+    GUI::Button spawnButton = GUI::Button();
 
-    testButton.setStyle(GUI::Style::Button({"sizeX: 90",
-                                            "sizeY: 50",
-                                            "PositionX: 89",
-                                            "PositionY: 78",
-                                            "OutlineThickness: 2",
-                                            "Color: (255,255,255)",
-                                            "OutlineColor: (0,0,0)"}));
-    testButton.setHoverStyle(GUI::Style::Button({"OutlineThickness: 4",
-                                                 "Color: (200,255,200)",
-                                                 "OutlineColor: (50,50,50)"}));
-    this->ButtonsList.push_back(testButton);
+    spawnButton.setFunction(&OnPressSpawn);
+
+    spawnButton.setStyle(GUI::Style::Button({"sizeX: 90",
+                                             "sizeY: 50",
+                                             "PositionX: 30",
+                                             "PositionY: 10",
+                                             "OutlineThickness: 2",
+                                             "Color: (255,255,255)",
+                                             "OutlineColor: (0,0,0)"}));
+
+    spawnButton.setHoverStyle(GUI::Style::Button({"OutlineThickness: 4",
+                                                  "Color: (200,200,200)",
+                                                  "OutlineColor: (50,50,50)"}));
+
+    spawnButton.setText("  Spawn", this->font, GUI::Style::Button({"Size: 20", "Color: (0,0,0)"}));
+
+    this->ButtonsList.push_back(spawnButton);
+
+    GUI::Button resetButton = GUI::Button();
+
+    resetButton.setFunction(&OnPressReset);
+
+    resetButton.setStyle(GUI::Style::Button({"sizeX: 90",
+                                             "sizeY: 50",
+                                             "PositionX: 30",
+                                             "PositionY: 70",
+                                             "OutlineThickness: 2",
+                                             "Color: (255,255,255)",
+                                             "OutlineColor: (0,0,0)"}));
+
+    resetButton.setHoverStyle(GUI::Style::Button({"OutlineThickness: 4",
+                                                  "Color: (200,200,200)",
+                                                  "OutlineColor: (50,50,50)"}));
+
+    resetButton.setText("  Reset", this->font, GUI::Style::Button({"Size: 20", "Color: (0,0,0)"}));
+
+    this->ButtonsList.push_back(resetButton);
 }
 
 // Constructors / Destructors
@@ -86,7 +112,13 @@ void Game::pollEvents()
             break;
         case sf::Event::MouseButtonPressed:
             if (this->event.key.code == sf::Mouse::Left)
-                spawnPhysicsObject();
+
+                pressMouseLeft = true;
+            break;
+        case sf::Event::MouseButtonReleased:
+            if (this->event.key.code == sf::Mouse::Left)
+                pressMouseLeft = false;
+            break;
         }
     }
 
@@ -111,7 +143,7 @@ void Game::updateGUI()
 
     for (GUI::Button &it : this->ButtonsList)
     {
-        it.update();
+        it.update(this->pressMouseLeft);
     }
 }
 
@@ -123,6 +155,20 @@ void Game::spawnPhysicsObject()
     this->GameObjectsList.push_back(ball);
     // std::cout << "Ball:" << ball.getColor().r << ", " << ball.getColor().g << std::endl;
     // std::cout << "Mouse:" << MousePosition.x << ", " << MousePosition.y << std::endl;
+}
+
+void Game::OnPressReset()
+{
+    for (PhysicsObject &it : Game::ptr->GameObjectsList)
+    {
+        delete &it;
+    }
+    Game::ptr->GameObjectsList = {};
+}
+
+void Game::OnPressSpawn()
+{
+    Game::ptr->spawnPhysicsObject();
 }
 
 void Game::update()

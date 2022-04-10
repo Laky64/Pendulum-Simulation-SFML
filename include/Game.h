@@ -23,17 +23,19 @@ private:
 	// PhysicsObjPos
 
 	//Window
-
+	sf::RenderWindow* window;
+	
 	sf::VideoMode videoMode;
 	sf::Event event;
 
 	//Game Objects
 
-	std::list<PhysicsObject> GameObjectsList = {};
+	std::list<PhysicsObject> GameObjectsList;
 
-	std::list<GUI::Button> ButtonsList = {};
+	std::list<GUI::Button> ButtonsList;
 
-	//Private functions
+	sf::Font font;
+	//Private functions 
 	void pollEvents();
 	void initVariables();
 	void initWindow();
@@ -44,20 +46,26 @@ private:
 	void spawnPhysicsObject();
 	const float G = .05f;
 
+	static void OnPressReset();
+	static void OnPressSpawn();
+
+
 public:
 	//Constructors / Destructors
 	Game();
 	virtual ~Game();
 
-
+	static Game* ptr;
 
 	//Accessors
 	const bool running() const;
-	sf::RenderWindow* window;
+	
 	sf::Vector2i MousePosition;
 	//Functions
 	
 	void update();
 	void render();
+
+	bool pressMouseLeft;
 
 };

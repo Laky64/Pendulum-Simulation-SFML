@@ -8,6 +8,8 @@ int main()
 {
     // init GameEngine
     Game game;
+    Game *ptr = &game;
+    game.ptr = ptr;
 
     // Game loop
     while (game.running())
