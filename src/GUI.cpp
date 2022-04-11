@@ -21,6 +21,7 @@ std::map<std::string, float> GUI::Style::Button(std::initializer_list<std::strin
 			a[elem.substr(0, elem.find(":"))] = std::stof(elem.substr(elem.find(":") + 1, -1));
 		}
 	}
+	a["interpolation"] = 2;
 	return a;
 }
 
@@ -39,10 +40,20 @@ GUI::Button::~Button()
 // Update + render
 bool GUI::Button::update(bool MouseButton)
 {
-
+	if (std::ceil(this->currentStyle["interpolation"] * 10.0) / 10.0 != std::ceil(this->activeStyle["interpolation"] * 10.0) / 10.0)
+	{
+		this->interpolateStyle();
+	}
 	if (this->MousePos.x > style["PositionX"] - style["OutlineThickness"] && this->MousePos.x < style["PositionX"] + style["sizeX"] + style["OutlineThickness"] && this->MousePos.y > style["PositionY"] - style["OutlineThickness"] && this->MousePos.y < style["PositionY"] + style["sizeY"] + style["OutlineThickness"])
 	{
-		this->changeStyle(this->HoverStyle);
+		if (MouseButton)
+		{
+			this->setActiveStyle(this->ClickedStyle);
+		}
+		else
+		{
+			this->setActiveStyle(this->HoverStyle);
+		}
 		if (MouseButton != leftMouseButton)
 		{
 			if (MouseButton)
@@ -55,7 +66,7 @@ bool GUI::Button::update(bool MouseButton)
 	}
 	else
 	{
-		this->changeStyle(this->style);
+		this->setActiveStyle(this->style);
 	}
 	return false;
 }
@@ -76,6 +87,7 @@ void GUI::Button::render(sf::RenderWindow *window)
 // styleButton
 void GUI::Button::changeStyle(std::map<std::string, float> a)
 {
+	this->currentStyle = a;
 	this->ButtonObject.setFillColor(sf::Color(a["ColorR"], a["ColorG"], a["ColorB"], 255));
 	this->ButtonObject.setSize(sf::Vector2f(a["sizeX"], a["sizeY"]));
 	this->ButtonObject.setPosition(a["PositionX"], a["PositionY"]);
@@ -83,11 +95,50 @@ void GUI::Button::changeStyle(std::map<std::string, float> a)
 	this->ButtonObject.setOutlineColor(sf::Color(a["OutlineColorR"], a["OutlineColorG"], a["OutlineColorB"], 255));
 }
 
+void GUI::Button::interpolateStyle()
+{
+
+	for (auto v1 : this->currentStyle)
+	{
+		for (auto v2 : this->activeStyle)
+		{
+
+			if (v1.first == v2.first && this->currentStyle[v1.first] != this->activeStyle[v1.first])
+			{
+				this->currentStyle[v1.first] += ((this->activeStyle[v1.first] - this->currentStyle[v1.first]) / this->interpolationDuration);
+			}
+		}
+	}
+	std::cout << this->currentStyle["interpolation"] << ", " << this->activeStyle["interpolation"] << "\n";
+	changeStyle(this->currentStyle);
+}
+
+void GUI::Button::setActiveStyle(std::map<std::string, float> a)
+{
+	if (lastActiveStyle != activeStyle)
+	{
+		this->currentStyle["interpolation"] = 1;
+	}
+	this->lastActiveStyle = this->activeStyle;
+	this->activeStyle = a;
+	this->activeStyle["interpolation"] = 2;
+}
+
 void GUI::Button::setStyle(std::map<std::string, float> a)
 {
 	this->style = a;
+	this->currentStyle = a;
+	this->activeStyle = a;
+	this->lastActiveStyle = a;
 	this->HoverStyle = a;
 	this->changeStyle(a);
+}
+
+void GUI::Button::setClickedStyle(std::map<std::string, float> a)
+{
+	this->ClickedStyle = this->style;
+	std::swap(this->ClickedStyle, a);
+	this->ClickedStyle.insert(a.begin(), a.end());
 }
 
 void GUI::Button::setHoverStyle(std::map<std::string, float> a)

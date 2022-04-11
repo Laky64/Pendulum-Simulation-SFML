@@ -17,8 +17,6 @@ namespace GUI {
 		static std::map<std::string, float> Button(std::initializer_list<std::string> list);
 	};
 
-
-
 	class Button
 	{
 	private:
@@ -28,10 +26,19 @@ namespace GUI {
 		sf::RectangleShape ButtonObject;
 		std::map<std::string, float> style;
 		std::map<std::string, float> HoverStyle;
-		void changeStyle(std::map<std::string, float> a);
+		std::map<std::string, float> ClickedStyle;
+
 		std::function<void()> OnPressFuntion;
 		bool leftMouseButton;
 
+		std::map<std::string, float> currentStyle;
+		std::map<std::string, float> lastActiveStyle;
+		std::map<std::string, float> activeStyle;
+		float interpolationDuration = 20;
+		void setActiveStyle(std::map<std::string, float> a);
+		void interpolateStyle();
+		void changeStyle(std::map<std::string, float> a);
+		
 
 	public:
 		//Constructors / Destructors
@@ -43,12 +50,12 @@ namespace GUI {
 		void render(sf::RenderWindow* window);
 		void setStyle(std::map<std::string,float> a);
 		void setHoverStyle(std::map<std::string, float> a);
+		void setClickedStyle(std::map<std::string, float> a);
 		void setText(std::string text, sf::Font font, std::map<std::string, float> style);
 
 		std::string functionName = "";
 		
 	};
-
 
 	class Slider
 	{

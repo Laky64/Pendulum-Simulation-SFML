@@ -47,6 +47,9 @@ void Game::initGUI()
     spawnButton.setHoverStyle(GUI::Style::Button({"OutlineThickness: 4",
                                                   "Color: (200,200,200)",
                                                   "OutlineColor: (50,50,50)"}));
+    spawnButton.setClickedStyle(GUI::Style::Button({"OutlineThickness: 4",
+                                                    "Color: (0,200,200)",
+                                                    "OutlineColor: (50,50,50)"}));
 
     spawnButton.setText("  Spawn", this->font, GUI::Style::Button({"Size: 20", "Color: (0,0,0)"}));
 
@@ -66,8 +69,11 @@ void Game::initGUI()
 
     resetButton.setHoverStyle(GUI::Style::Button({"OutlineThickness: 4",
                                                   "Color: (200,200,200)",
-                                                  "OutlineColor: (50,50,50)"}));
-
+                                                  "OutlineColor: (0,50,50)"}));
+    resetButton.setClickedStyle(GUI::Style::Button({"OutlineThickness: 4",
+                                                    "Color: (0,200,200)",
+                                                    "OutlineColor: (50,50,50)",
+                                                    "OutlineThickness: 5"}));
     resetButton.setText("  Reset", this->font, GUI::Style::Button({"Size: 20", "Color: (0,0,0)"}));
 
     this->ButtonsList.push_back(resetButton);
