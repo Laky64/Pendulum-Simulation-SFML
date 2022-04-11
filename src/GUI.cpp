@@ -1,4 +1,5 @@
 #include <iostream>
+#include "math.h"
 #include "../include/GUI.h"
 #include "../include/Game.h"
 
@@ -40,7 +41,7 @@ GUI::Button::~Button()
 // Update + render
 bool GUI::Button::update(bool MouseButton)
 {
-	if (std::lroundf(this->currentStyle["interpolation"] * 10.0) / 10.0 != std::lroundf(this->activeStyle["interpolation"] * 10.0) / 10.0)
+	if (ceilf(this->currentStyle["interpolation"] * 100.0) / 100.0 != ceilf(this->activeStyle["interpolation"] * 100.0) / 100.0)
 	{
 		this->interpolateStyle();
 	}
