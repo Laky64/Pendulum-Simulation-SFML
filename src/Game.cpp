@@ -1,7 +1,7 @@
 #include <iostream>
-#include "../include/Game.h"
-#include "../include/PhysicsObject.h"
-#include "../include/GUI.h"
+#include "Game.h"
+#include "PhysicsObject.h"
+#include "GUI.h"
 #include <iterator>
 #include <algorithm>
 #include <map>
@@ -29,47 +29,68 @@ void Game::initGameObjects()
 {
 }
 
+
+
 void Game::initGUI()
 {
+    
 
     GUI::Button spawnButton = GUI::Button();
 
     spawnButton.setFunction(&OnPressSpawn);
 
-    spawnButton.setStyle(GUI::Style::Button({"sizeX: 90",
-                                             "sizeY: 50",
-                                             "PositionX: 30",
-                                             "PositionY: 10",
-                                             "OutlineThickness: 2",
-                                             "Color: (255,255,255)",
-                                             "OutlineColor: (0,0,0)"}));
 
-    spawnButton.setHoverStyle(GUI::Style::Button({"OutlineThickness: 4",
-                                                  "Color: (200,200,200)",
-                                                  "OutlineColor: (50,50,50)"}));
 
-    spawnButton.setText("  Spawn", this->font, GUI::Style::Button({"Size: 20", "Color: (0,0,0)"}));
+
+    spawnButton.setStyle(GUI::Style::Button({
+        "sizeX: 90",
+        "sizeY: 50",
+        "PositionX: 30",
+        "PositionY: 10",
+        "OutlineThickness: 2",
+        "Color: (255,255,255)",
+        "OutlineColor: (0,0,0)"
+        }));
+
+    spawnButton.setHoverStyle(GUI::Style::Button({
+        "OutlineThickness: 4",
+        "Color: (200,200,200)",
+        "OutlineColor: (50,50,50)"
+        }));
+
+    spawnButton.setText("  Spawn", this->font, GUI::Style::Button({
+        "Size: 20",
+        "Color: (0,0,0)"
+        }));
 
     this->ButtonsList.push_back(spawnButton);
+
 
     GUI::Button resetButton = GUI::Button();
 
     resetButton.setFunction(&OnPressReset);
 
-    resetButton.setStyle(GUI::Style::Button({"sizeX: 90",
-                                             "sizeY: 50",
-                                             "PositionX: 30",
-                                             "PositionY: 70",
-                                             "OutlineThickness: 2",
-                                             "Color: (255,255,255)",
-                                             "OutlineColor: (0,0,0)"}));
+    resetButton.setStyle(GUI::Style::Button({
+        "sizeX: 90",                                
+        "sizeY: 50",                               
+        "PositionX: 30",                               
+        "PositionY: 70",                             
+        "OutlineThickness: 2",                             
+        "Color: (255,255,255)",                          
+        "OutlineColor: (0,0,0)"
+        }));
 
-    resetButton.setHoverStyle(GUI::Style::Button({"OutlineThickness: 4",
-                                                  "Color: (200,200,200)",
-                                                  "OutlineColor: (50,50,50)"}));
+    resetButton.setHoverStyle(GUI::Style::Button({
+        "OutlineThickness: 4",
+        "Color: (200,200,200)",
+        "OutlineColor: (50,50,50)"
+        }));
 
-    resetButton.setText("  Reset", this->font, GUI::Style::Button({"Size: 20", "Color: (0,0,0)"}));
-
+    resetButton.setText("  Reset", this->font, GUI::Style::Button({
+        "Size: 20",
+        "Color: (0,0,0)"
+        }));
+    
     this->ButtonsList.push_back(resetButton);
 }
 
@@ -112,7 +133,7 @@ void Game::pollEvents()
             break;
         case sf::Event::MouseButtonPressed:
             if (this->event.key.code == sf::Mouse::Left)
-
+                
                 pressMouseLeft = true;
             break;
         case sf::Event::MouseButtonReleased:
@@ -159,9 +180,10 @@ void Game::spawnPhysicsObject()
 
 void Game::OnPressReset()
 {
-    for (PhysicsObject &it : Game::ptr->GameObjectsList)
+    std::cout << "a" << "\n";
+    for (PhysicsObject& it : Game::ptr->GameObjectsList)
     {
-        delete &it;
+        //delete &it;
     }
     Game::ptr->GameObjectsList = {};
 }
@@ -170,6 +192,9 @@ void Game::OnPressSpawn()
 {
     Game::ptr->spawnPhysicsObject();
 }
+
+
+
 
 void Game::update()
 {
@@ -194,6 +219,8 @@ void Game::render()
         it.render(this->window);
     }
     sf::RectangleShape rectangle;
+
+
 
     this->window->display(); // done drawing
 }

@@ -8,16 +8,16 @@
 #include <string>
 #include <stdarg.h>
 #include <functional>
-#include "../include/Game.h"
 
-static class GUI
-{
-public:
-	class Style
-	{
+
+namespace GUI {
+	
+	class Style {
 	public:
 		static std::map<std::string, float> Button(std::initializer_list<std::string> list);
 	};
+
+
 
 	class Button
 	{
@@ -32,29 +32,36 @@ public:
 		std::function<void()> OnPressFuntion;
 		bool leftMouseButton;
 
+
 	public:
-		// Constructors / Destructors
+		//Constructors / Destructors
 		void setFunction(std::function<void()> a);
 		Button();
 		virtual ~Button();
 		void update(bool MouseButton);
-		bool getState();
-		void render(sf::RenderWindow *window);
-		void setStyle(std::map<std::string, float> a);
+		bool getState();	
+		void render(sf::RenderWindow* window);
+		void setStyle(std::map<std::string,float> a);
 		void setHoverStyle(std::map<std::string, float> a);
 		void setText(std::string text, sf::Font font, std::map<std::string, float> style);
+		
 	};
+
 
 	class Slider
 	{
 	private:
 		void render();
 
+
 	public:
-		// Constructors / Destructors
+		//Constructors / Destructors
 		Slider();
 		virtual ~Slider();
 		void update();
 		float getValue();
 	};
-};
+
+}
+
+

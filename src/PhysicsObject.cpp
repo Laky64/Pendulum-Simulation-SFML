@@ -1,4 +1,4 @@
-#include "../include/PhysicsObject.h"
+#include "PhysicsObject.h"
 #include <iostream>
 #include <math.h>
 // Constructors / Destructors

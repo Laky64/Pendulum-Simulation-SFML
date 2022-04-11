@@ -2,13 +2,13 @@
 //
 
 #include <iostream>
-#include "../include/Game.h"
+#include "Game.h"
 
 int main()
 {
     // init GameEngine
     Game game;
-    Game *ptr = &game;
+    Game* ptr = &game;
     game.ptr = ptr;
 
     // Game loop
