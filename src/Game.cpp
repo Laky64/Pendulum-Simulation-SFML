@@ -98,7 +98,7 @@ void Game::initGUI()
 
 Game::Game()
 {
-
+    
     this->initVariables();
     this->initWindow();
     this->initGameObjects();
@@ -152,11 +152,13 @@ void Game::pollEvents()
 // Update
 void Game::updateGameObjects()
 {
-
+    /*
     for (PhysicsObject &it : this->GameObjectsList)
     {
         it.updateObject();
     }
+    */
+
 }
 
 void Game::updateGUI()
@@ -170,6 +172,7 @@ void Game::updateGUI()
 
 void Game::spawnPhysicsObject()
 {
+    std::cout << "a" << "\n";
     PhysicsObject ball(20, 0.07f, 67);
     ball.setPosition(MousePosition.x - ball.getRadius(), MousePosition.y - ball.getRadius());
     ball.setColor(sf::Color(150, 32, 56, 255));
@@ -180,17 +183,29 @@ void Game::spawnPhysicsObject()
 
 void Game::OnPressReset()
 {
+    
     std::cout << "a" << "\n";
+    /*
+    
     for (PhysicsObject& it : Game::ptr->GameObjectsList)
     {
         //delete &it;
     }
     Game::ptr->GameObjectsList = {};
+    
+    
+    
+    */
+
+
 }
 
 void Game::OnPressSpawn()
 {
-    Game::ptr->spawnPhysicsObject();
+    
+    //Game::ptr->spawnPhysicsObject();
+    
+    
 }
 
 
@@ -207,12 +222,14 @@ void Game::update()
 void Game::render()
 {
     this->window->clear(sf::Color(40, 40, 40, 255)); // claer screen
-
+    /*
     for (PhysicsObject &it : this->GameObjectsList)
     {
 
         it.renderObject(this->window);
     }
+    */
+
 
     for (GUI::Button &it : this->ButtonsList)
     {
@@ -223,4 +240,10 @@ void Game::render()
 
 
     this->window->display(); // done drawing
+}
+
+void Game::setInstance()
+{
+    //Game::ptrSta = this->ptr;
+    //std::cout << Game::ptrSta << ", " << this->ptr << "\n";
 }

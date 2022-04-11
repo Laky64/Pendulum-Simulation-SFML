@@ -55,8 +55,8 @@ public:
 	Game();
 	virtual ~Game();
 
-	static Game* ptr;
-
+	static Game* ptrSta;
+	Game* ptr;
 	//Accessors
 	const bool running() const;
 	
@@ -65,6 +65,7 @@ public:
 	
 	void update();
 	void render();
+	void setInstance();
 
 	bool pressMouseLeft;
 

@@ -10,7 +10,9 @@ int main()
     Game game;
     Game* ptr = &game;
     game.ptr = ptr;
+    std::cout << Game::ptrSta << "\n";
 
+    
     // Game loop
     while (game.running())
     {
