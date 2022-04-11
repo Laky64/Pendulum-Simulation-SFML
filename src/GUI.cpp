@@ -41,7 +41,7 @@ GUI::Button::~Button()
 // Update + render
 bool GUI::Button::update(bool MouseButton)
 {
-	if (ceilf(this->currentStyle["interpolation"] * 100.0) / 100.0 != ceilf(this->activeStyle["interpolation"] * 100.0) / 100.0)
+	if (ceilf(this->currentStyle["interpolation"] * 10.0) / 10.0 != ceilf(this->activeStyle["interpolation"] * 10.0) / 10.0)
 	{
 		this->interpolateStyle();
 	}
