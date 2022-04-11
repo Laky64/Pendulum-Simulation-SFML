@@ -40,7 +40,7 @@ GUI::Button::~Button()
 // Update + render
 bool GUI::Button::update(bool MouseButton)
 {
-	if (std::ceil(this->currentStyle["interpolation"] * 10.0) / 10.0 != std::ceil(this->activeStyle["interpolation"] * 10.0) / 10.0)
+	if (lroundf(this->currentStyle["interpolation"] * 10.0) / 10.0 != lroundf(this->activeStyle["interpolation"] * 10.0) / 10.0)
 	{
 		this->interpolateStyle();
 	}
