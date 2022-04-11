@@ -1,7 +1,7 @@
 #include <iostream>
-#include "Game.h"
-#include "PhysicsObject.h"
-#include "GUI.h"
+#include "../include/Game.h"
+#include "../include/PhysicsObject.h"
+#include "../include/GUI.h"
 #include <iterator>
 #include <algorithm>
 #include <map>
@@ -29,68 +29,47 @@ void Game::initGameObjects()
 {
 }
 
-
-
 void Game::initGUI()
 {
-    
 
     GUI::Button spawnButton = GUI::Button();
 
-    spawnButton.setFunction(&OnPressSpawn);
+    spawnButton.functionName = "spawn";
 
+    spawnButton.setStyle(GUI::Style::Button({"sizeX: 90",
+                                             "sizeY: 50",
+                                             "PositionX: 30",
+                                             "PositionY: 10",
+                                             "OutlineThickness: 2",
+                                             "Color: (255,255,255)",
+                                             "OutlineColor: (0,0,0)"}));
 
+    spawnButton.setHoverStyle(GUI::Style::Button({"OutlineThickness: 4",
+                                                  "Color: (200,200,200)",
+                                                  "OutlineColor: (50,50,50)"}));
 
-
-    spawnButton.setStyle(GUI::Style::Button({
-        "sizeX: 90",
-        "sizeY: 50",
-        "PositionX: 30",
-        "PositionY: 10",
-        "OutlineThickness: 2",
-        "Color: (255,255,255)",
-        "OutlineColor: (0,0,0)"
-        }));
-
-    spawnButton.setHoverStyle(GUI::Style::Button({
-        "OutlineThickness: 4",
-        "Color: (200,200,200)",
-        "OutlineColor: (50,50,50)"
-        }));
-
-    spawnButton.setText("  Spawn", this->font, GUI::Style::Button({
-        "Size: 20",
-        "Color: (0,0,0)"
-        }));
+    spawnButton.setText("  Spawn", this->font, GUI::Style::Button({"Size: 20", "Color: (0,0,0)"}));
 
     this->ButtonsList.push_back(spawnButton);
 
-
     GUI::Button resetButton = GUI::Button();
 
-    resetButton.setFunction(&OnPressReset);
+    resetButton.functionName = "reset";
 
-    resetButton.setStyle(GUI::Style::Button({
-        "sizeX: 90",                                
-        "sizeY: 50",                               
-        "PositionX: 30",                               
-        "PositionY: 70",                             
-        "OutlineThickness: 2",                             
-        "Color: (255,255,255)",                          
-        "OutlineColor: (0,0,0)"
-        }));
+    resetButton.setStyle(GUI::Style::Button({"sizeX: 90",
+                                             "sizeY: 50",
+                                             "PositionX: 30",
+                                             "PositionY: 70",
+                                             "OutlineThickness: 2",
+                                             "Color: (255,255,255)",
+                                             "OutlineColor: (0,0,0)"}));
 
-    resetButton.setHoverStyle(GUI::Style::Button({
-        "OutlineThickness: 4",
-        "Color: (200,200,200)",
-        "OutlineColor: (50,50,50)"
-        }));
+    resetButton.setHoverStyle(GUI::Style::Button({"OutlineThickness: 4",
+                                                  "Color: (200,200,200)",
+                                                  "OutlineColor: (50,50,50)"}));
 
-    resetButton.setText("  Reset", this->font, GUI::Style::Button({
-        "Size: 20",
-        "Color: (0,0,0)"
-        }));
-    
+    resetButton.setText("  Reset", this->font, GUI::Style::Button({"Size: 20", "Color: (0,0,0)"}));
+
     this->ButtonsList.push_back(resetButton);
 }
 
@@ -98,7 +77,7 @@ void Game::initGUI()
 
 Game::Game()
 {
-    
+
     this->initVariables();
     this->initWindow();
     this->initGameObjects();
@@ -133,7 +112,7 @@ void Game::pollEvents()
             break;
         case sf::Event::MouseButtonPressed:
             if (this->event.key.code == sf::Mouse::Left)
-                
+
                 pressMouseLeft = true;
             break;
         case sf::Event::MouseButtonReleased:
@@ -152,13 +131,11 @@ void Game::pollEvents()
 // Update
 void Game::updateGameObjects()
 {
-    /*
-    for (PhysicsObject &it : this->GameObjectsList)
-    {
-        it.updateObject();
-    }
-    */
 
+    for (PhysicsObject *it : this->GameObjectsList)
+    {
+        it->updateObject();
+    }
 }
 
 void Game::updateGUI()
@@ -166,50 +143,33 @@ void Game::updateGUI()
 
     for (GUI::Button &it : this->ButtonsList)
     {
-        it.update(this->pressMouseLeft);
+        if (it.update(this->pressMouseLeft))
+        {
+            if (it.functionName == "spawn")
+            {
+                this->spawnPhysicsObject();
+            }
+            if (it.functionName == "reset")
+            {
+                for (PhysicsObject *it : this->GameObjectsList)
+                {
+                    delete it;
+                }
+                this->GameObjectsList = {};
+            };
+        }
     }
 }
 
 void Game::spawnPhysicsObject()
 {
-    std::cout << "a" << "\n";
-    PhysicsObject ball(20, 0.07f, 67);
-    ball.setPosition(MousePosition.x - ball.getRadius(), MousePosition.y - ball.getRadius());
-    ball.setColor(sf::Color(150, 32, 56, 255));
+    PhysicsObject *ball = new PhysicsObject(20, 0.07f, 67);
+    ball->setPosition(MousePosition.x - ball->getRadius(), MousePosition.y - ball->getRadius());
+    ball->setColor(sf::Color(150, 32, 56, 255));
     this->GameObjectsList.push_back(ball);
     // std::cout << "Ball:" << ball.getColor().r << ", " << ball.getColor().g << std::endl;
     // std::cout << "Mouse:" << MousePosition.x << ", " << MousePosition.y << std::endl;
 }
-
-void Game::OnPressReset()
-{
-    
-    std::cout << "a" << "\n";
-    /*
-    
-    for (PhysicsObject& it : Game::ptr->GameObjectsList)
-    {
-        //delete &it;
-    }
-    Game::ptr->GameObjectsList = {};
-    
-    
-    
-    */
-
-
-}
-
-void Game::OnPressSpawn()
-{
-    
-    //Game::ptr->spawnPhysicsObject();
-    
-    
-}
-
-
-
 
 void Game::update()
 {
@@ -222,14 +182,12 @@ void Game::update()
 void Game::render()
 {
     this->window->clear(sf::Color(40, 40, 40, 255)); // claer screen
-    /*
-    for (PhysicsObject &it : this->GameObjectsList)
+
+    for (PhysicsObject *it : this->GameObjectsList)
     {
 
-        it.renderObject(this->window);
+        it->renderObject(this->window);
     }
-    */
-
 
     for (GUI::Button &it : this->ButtonsList)
     {
@@ -237,13 +195,5 @@ void Game::render()
     }
     sf::RectangleShape rectangle;
 
-
-
     this->window->display(); // done drawing
-}
-
-void Game::setInstance()
-{
-    //Game::ptrSta = this->ptr;
-    //std::cout << Game::ptrSta << ", " << this->ptr << "\n";
 }

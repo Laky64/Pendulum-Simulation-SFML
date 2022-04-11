@@ -35,15 +35,17 @@ namespace GUI {
 
 	public:
 		//Constructors / Destructors
-		void setFunction(std::function<void()> a);
+		
 		Button();
 		virtual ~Button();
-		void update(bool MouseButton);
+		bool update(bool MouseButton);
 		bool getState();	
 		void render(sf::RenderWindow* window);
 		void setStyle(std::map<std::string,float> a);
 		void setHoverStyle(std::map<std::string, float> a);
 		void setText(std::string text, sf::Font font, std::map<std::string, float> style);
+
+		std::string functionName = "";
 		
 	};
 

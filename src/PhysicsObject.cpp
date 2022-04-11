@@ -1,4 +1,4 @@
-#include "PhysicsObject.h"
+#include "../include/PhysicsObject.h"
 #include <iostream>
 #include <math.h>
 // Constructors / Destructors
@@ -97,7 +97,7 @@ void PhysicsObject::updateObject()
 	this->Position.x += this->Velocity.x;
 	this->Position.y += this->Velocity.y;
 
-	// this->updatePendulum();
+	this->updatePendulum();
 
 	this->object.setPosition(Position.x, Position.y);
 }

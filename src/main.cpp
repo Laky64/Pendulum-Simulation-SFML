@@ -2,17 +2,13 @@
 //
 
 #include <iostream>
-#include "Game.h"
+#include "../include/Game.h"
 
 int main()
 {
     // init GameEngine
     Game game;
-    Game* ptr = &game;
-    game.ptr = ptr;
-    std::cout << Game::ptrSta << "\n";
 
-    
     // Game loop
     while (game.running())
     {

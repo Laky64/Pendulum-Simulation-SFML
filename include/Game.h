@@ -30,7 +30,7 @@ private:
 
 	//Game Objects
 
-	std::list<PhysicsObject> GameObjectsList;
+	std::list<PhysicsObject*> GameObjectsList;
 
 	std::list<GUI::Button> ButtonsList;
 
@@ -46,8 +46,6 @@ private:
 	void spawnPhysicsObject();
 	const float G = .05f;
 
-	static void OnPressReset();
-	static void OnPressSpawn();
 
 
 public:
@@ -55,8 +53,6 @@ public:
 	Game();
 	virtual ~Game();
 
-	static Game* ptrSta;
-	Game* ptr;
 	//Accessors
 	const bool running() const;
 	
@@ -65,7 +61,7 @@ public:
 	
 	void update();
 	void render();
-	void setInstance();
+
 
 	bool pressMouseLeft;
 
