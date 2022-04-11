@@ -11,7 +11,7 @@
 void Game::initVariables()
 {
     this->window = nullptr;
-    if (!font.loadFromFile("font.ttf"))
+    if (!font.loadFromFile("assets/font.ttf"))
     {
         sf::err() << "Couldn't load font\n";
     }
