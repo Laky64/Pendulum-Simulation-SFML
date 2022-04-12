@@ -15,13 +15,16 @@ namespace GUI {
 	class Style {
 	public:
 		static std::map<std::string, float> Button(std::initializer_list<std::string> list);
-	};
+		static std::map<std::string, float> Text(std::initializer_list<std::string> list);
+
+	};	
 
 	class Button
 	{
 	private:
 		sf::Font font;
 		sf::Text text;
+		sf::Vertex testLine[2];
 		sf::Vector2i MousePos;
 		sf::RectangleShape ButtonObject;
 		std::map<std::string, float> style;

@@ -10,6 +10,7 @@
 // Private Functions
 void Game::initVariables()
 {
+
     this->window = nullptr;
     if (!font.loadFromFile("../assets/font.ttf"))
     {
@@ -19,9 +20,12 @@ void Game::initVariables()
 
 void Game::initWindow()
 {
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = 8;
+
     this->videoMode.width = 1600;
     this->videoMode.height = 900;
-    this->window = new sf::RenderWindow(this->videoMode, "Main", sf::Style::Close | sf::Style::Resize);
+    this->window = new sf::RenderWindow(this->videoMode, "Main", sf::Style::Close, settings);
     this->window->setFramerateLimit(165);
 }
 
@@ -36,8 +40,8 @@ void Game::initGUI()
 
     spawnButton.functionName = "spawn";
 
-    spawnButton.setStyle(GUI::Style::Button({"sizeX: 90",
-                                             "sizeY: 50",
+    spawnButton.setStyle(GUI::Style::Button({"sizeX: 110",
+                                             "sizeY: 60",
                                              "PositionX: 30",
                                              "PositionY: 10",
                                              "OutlineThickness: 2",
@@ -51,7 +55,7 @@ void Game::initGUI()
                                                     "OutlineColor: (50,50,50)",
                                                     "OutlineThickness: 1"}));
 
-    spawnButton.setText("  Spawn", this->font, GUI::Style::Button({"Size: 20", "Color: (0,0,0)"}));
+    spawnButton.setText("Spawn", this->font, GUI::Style::Text({"Size: 30", "Color: (0,0,0)", "LetterSpace: 1"}));
 
     this->ButtonsList.push_back(spawnButton);
 
@@ -59,10 +63,10 @@ void Game::initGUI()
 
     resetButton.functionName = "reset";
 
-    resetButton.setStyle(GUI::Style::Button({"sizeX: 90",
-                                             "sizeY: 50",
+    resetButton.setStyle(GUI::Style::Button({"sizeX: 110",
+                                             "sizeY: 60",
                                              "PositionX: 30",
-                                             "PositionY: 70",
+                                             "PositionY: 90",
                                              "OutlineThickness: 2",
                                              "Color: (200,200,200)",
                                              "OutlineColor: (30,30,30)"}));
@@ -73,7 +77,7 @@ void Game::initGUI()
     resetButton.setClickedStyle(GUI::Style::Button({"Color: (200,20,20)",
                                                     "OutlineColor: (50,50,50)",
                                                     "OutlineThickness: 1"}));
-    resetButton.setText("  Reset", this->font, GUI::Style::Button({"Size: 20", "Color: (0,0,0)"}));
+    resetButton.setText("Reset", this->font, GUI::Style::Text({"Size: 30", "Color: (0,0,0)", "LetterSpace: 1", "OutlineThickness: 0", "OutlineColor: (0,0,0)", "Style: Underlined", "Style: Italic", "Style: Bold", "Style: StrikeThrough ", "Position: Left", "OffsetX: 5", "Kuchen: a"}));
 
     this->ButtonsList.push_back(resetButton);
 }
