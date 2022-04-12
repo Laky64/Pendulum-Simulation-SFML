@@ -46,8 +46,8 @@ private:
 
 	sf::Vector2f startingPosition;
 
-	int a = 0;
 
+	float SimulationSpeed;
 public:
 	//Constructors / Destructors
 	PhysicsObject(float radius, float gravitationalAcceleration, float mass);
@@ -73,6 +73,9 @@ public:
 	void setAcceleration(float x, float y);
 	void addAcceleration(float x, float y);
 	void setColor(sf::Color color);
+	void setSimulationSpeed(float SimulationSpeed);
+	
+	
 
 
 };

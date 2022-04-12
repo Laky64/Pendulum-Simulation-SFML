@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <map>
 #include <string>
+#include "math.h"
 
 //----Constructor / Destructor----//
 
@@ -61,6 +62,11 @@ void Game::pollEvents()
 
     // update Mouse Position
     MousePosition = sf::Mouse::getPosition(*this->window);
+
+    // calc FPS
+    currentTime = clock.getElapsedTime();
+    fps = 1.0f / (currentTime.asSeconds() - previousTime.asSeconds());
+    previousTime = currentTime;
 }
 
 //--initialize--//
@@ -72,6 +78,8 @@ void Game::initVariables()
     {
         sf::err() << "Couldn't load font\n";
     }
+
+    previousTime = clock.getElapsedTime();
 }
 
 void Game::initWindow()
@@ -105,35 +113,35 @@ void Game::initGUI()
                                              "PositionX: 30",
                                              "PositionY: 10",
                                              "OutlineThickness: 2",
-                                             "Color: (200,200,200)",
-                                             "OutlineColor: (30,30,30)"}));
+                                             "Color: (200,200,200,100)",
+                                             "OutlineColor: (30,30,30,255)"}));
     resetButton.setStyle(GUI::Style::Button({"sizeX: 110",
                                              "sizeY: 60",
                                              "PositionX: 30",
                                              "PositionY: 90",
                                              "OutlineThickness: 2",
-                                             "Color: (200,200,200)",
-                                             "OutlineColor: (30,30,30)"}));
+                                             "Color: (200,200,200,100)",
+                                             "OutlineColor: (30,30,30,255)"}));
 
     // set Hovered Style
-    spawnButton.setHoverStyle(GUI::Style::Button({"Color: (250,250,250)",
-                                                  "OutlineColor: (50,150,50)",
+    spawnButton.setHoverStyle(GUI::Style::Button({"Color: (250,250,250,255)",
+                                                  "OutlineColor: (50,150,50,255)",
                                                   "OutlineThickness: 4"}));
-    resetButton.setHoverStyle(GUI::Style::Button({"Color: (250,250,250)",
-                                                  "OutlineColor: (150,50,50)",
+    resetButton.setHoverStyle(GUI::Style::Button({"Color: (250,250,250,255)",
+                                                  "OutlineColor: (150,50,50,255)",
                                                   "OutlineThickness: 4"}));
 
     // set clicked Style
-    spawnButton.setClickedStyle(GUI::Style::Button({"Color: (20,200,20)",
-                                                    "OutlineColor: (50,50,50)",
+    spawnButton.setClickedStyle(GUI::Style::Button({"Color: (20,200,20,255)",
+                                                    "OutlineColor: (50,50,50,255)",
                                                     "OutlineThickness: 1"}));
-    resetButton.setClickedStyle(GUI::Style::Button({"Color: (200,20,20)",
-                                                    "OutlineColor: (50,50,50)",
+    resetButton.setClickedStyle(GUI::Style::Button({"Color: (200,20,20,255)",
+                                                    "OutlineColor: (50,50,50,255)",
                                                     "OutlineThickness: 1"}));
 
     // set text, font and Style of text
-    spawnButton.setText("Spawn", this->font, GUI::Style::Text({"Size: 30", "Color: (0,0,0)", "LetterSpace: 1"}));
-    resetButton.setText("Reset", this->font, GUI::Style::Text({"Size: 30", "Color: (0,0,0)", "LetterSpace: 1"}));
+    spawnButton.setText("Spawn", this->font, GUI::Style::Text({"Size: 30", "Color: (0,0,0,255)", "LetterSpace: 1"}));
+    resetButton.setText("Reset", this->font, GUI::Style::Text({"Size: 30", "Color: (0,0,0,255)", "LetterSpace: 1"}));
 
     // add Button to List
     this->ButtonsList.push_back(spawnButton);
@@ -141,48 +149,53 @@ void Game::initGUI()
 
     //--Slider--//
     // create new Slider
-    GUI::Slider testSlider = GUI::Slider(-5, 5);
+    GUI::Slider SimulationSpeedSlider = GUI::Slider(0, 1);
 
     // set the name of function to execute, when pressed
-    testSlider.functionName = "test";
+    SimulationSpeedSlider.functionName = "SimulationSpeed";
 
     // set default Style
-    testSlider.setStyleBar(GUI::Style::Button({"sizeX: 250",
-                                               "sizeY: 5",
-                                               "PositionX: 30",
-                                               "PositionY: 170",
-                                               "OutlineThickness: 4",
-                                               "Color: (255,255,255)",
-                                               "OutlineColor: (30,30,30)"}));
+    SimulationSpeedSlider.setStyleBar(GUI::Style::Button({"sizeX: 250",
+                                                          "sizeY: 5",
+                                                          "PositionX: 30",
+                                                          "PositionY: 170",
+                                                          "OutlineThickness: 4",
+                                                          "Color: (255,255,255,100)",
+                                                          "OutlineColor: (30,30,30,100)"}));
 
     // set Hovered Style
-    testSlider.setHoverStyleBar(GUI::Style::Button({"Color: (250,250,250)",
-                                                    "OutlineColor: (150,150,150)",
-                                                    "OutlineThickness: 2"}));
+    SimulationSpeedSlider.setHoverStyleBar(GUI::Style::Button({"Color: (250,250,250,255)",
+                                                               "OutlineColor: (150,150,150,255)",
+                                                               "OutlineThickness: 2"}));
 
     // set clicked Style
-    testSlider.setClickedStyleBar(GUI::Style::Button({"Color: (250,250,250)",
-                                                      "OutlineColor: (50,50,50)",
-                                                      "OutlineThickness: 1.4"}));
+    SimulationSpeedSlider.setClickedStyleBar(GUI::Style::Button({"Color: (250,250,250,255)",
+                                                                 "OutlineColor: (50,50,50,255)",
+                                                                 "OutlineThickness: 1.4"}));
 
     // set default Style
-    testSlider.setStyleHandle(GUI::Style::Button({"radius: 13",
-                                                  "OutlineThickness: 2",
-                                                  "Color: (200,200,200)",
-                                                  "OutlineColor: (30,30,30)"}));
+    SimulationSpeedSlider.setStyleHandle(GUI::Style::Button({"radius: 13",
+                                                             "OutlineThickness: 2",
+                                                             "Color: (200,200,200,255)",
+                                                             "OutlineColor: (30,30,30,255)"}));
 
     // set Hovered Style
-    testSlider.setHoverStyleHandle(GUI::Style::Button({"Color: (250,250,250)",
-                                                       "OutlineColor: (150,50,50)",
-                                                       "OutlineThickness: 4"}));
+    SimulationSpeedSlider.setHoverStyleHandle(GUI::Style::Button({"Color: (250,250,250,255)",
+                                                                  "OutlineColor: (150,50,50,255)",
+                                                                  "OutlineThickness: 4"}));
 
     // set clicked Style
-    testSlider.setClickedStyleHandle(GUI::Style::Button({"Color: (250,250,250)",
-                                                         "OutlineColor: (150,50,50)",
-                                                         "OutlineThickness: 4"}));
+    SimulationSpeedSlider.setClickedStyleHandle(GUI::Style::Button({"Color: (150,150,150,255)",
+                                                                    "OutlineColor: (150,50,50,255)",
+                                                                    "OutlineThickness: 2"}));
 
     // add Button to List
-    this->SliderList.push_back(testSlider);
+    this->SliderList.push_back(SimulationSpeedSlider);
+
+    //---Text---//
+    GUI::Text FPStext(this->window, "FPS:", this->font, GUI::Style::Text({"Size: 30", "Color: (0,0,0,255)", "LetterSpace: 1", "PositionX: Left", "PositionY: Top", "OffsetX: 30", "OffsetY: 200", "Style: Underlined", "OutlineColor: (50,50,50,200)", "OutlineThickness: 1"}));
+    FPStext.name = "FPS";
+    this->TextList.push_back(FPStext);
 }
 
 //--Update--//
@@ -244,11 +257,23 @@ void Game::updateGUI()
         if (it.update(this->pressMouseLeft))
         {
             // get name of function
-            if (it.functionName == "test")
+            if (it.functionName == "SimulationSpeed")
             {
 
-                it.getValue();
+                for (PhysicsObject *it2 : this->GameObjectsList)
+                {
+                    it2->setSimulationSpeed(it.getValue());
+                }
             }
+        }
+    }
+
+    //--Text--//
+    for (GUI::Text &it : this->TextList)
+    {
+        if (it.name == "FPS")
+        {
+            it.setString("FPS:" + std::to_string(int(this->fps)));
         }
     }
 }
@@ -294,6 +319,12 @@ void Game::render()
 
     //--Slider--//
     for (GUI::Slider &it : this->SliderList)
+    {
+        it.render(this->window);
+    }
+
+    //--Text--//
+    for (GUI::Text &it : this->TextList)
     {
         it.render(this->window);
     }

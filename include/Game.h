@@ -33,6 +33,9 @@ private:
 	std::list<GUI::Button> ButtonsList;
 	//-SliderList-//
 	std::list<GUI::Slider> SliderList;
+	//-TextList-//
+	std::list<GUI::Text> TextList;
+
 
 	//--Private functions --//
 	//-Events-//
@@ -58,6 +61,12 @@ private:
 	//-inputs-//
 	bool pressMouseLeft;
 	sf::Vector2i MousePosition;
+
+	//-timing-fps-//
+	float fps;
+	sf::Clock clock;
+	sf::Time previousTime;
+	sf::Time currentTime;
 
 public:
 	//-Constructors / Destructors-//

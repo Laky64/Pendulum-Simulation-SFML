@@ -124,6 +124,16 @@ namespace GUI {
 		std::string functionName = "";
 	};
 
+	class Text {
+	private:
+		sf::Font font;
+		sf::Text text;
+	public:
+		Text(sf::RenderWindow* window, std::string text, sf::Font font, std::map<std::string, float> style);
+		void render(sf::RenderWindow* window);
+		void setString(std::string text);
+		std::string name;
+	};
 }
 
 

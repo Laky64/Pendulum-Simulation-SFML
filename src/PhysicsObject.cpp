@@ -24,6 +24,8 @@ PhysicsObject::PhysicsObject(float radius, float gravitationalAcceleration, floa
 	this->connectionTofixPoint[1].color = sf::Color(255, 255, 255, 255);
 
 	this->connectionTofixPoint[0].position = sf::Vector2f(fixPoint.x, fixPoint.y);
+
+	this->SimulationSpeed = 0;
 }
 
 PhysicsObject::~PhysicsObject()
@@ -55,7 +57,7 @@ void PhysicsObject::updatePendulum()
 
 	// calc Energy
 	this->Epot = height * this->G;
-	this->Ekin = this->Emax - this->Epot;
+	this->Ekin = (this->Emax - this->Epot);
 
 	if (lround(initialHeight * 10) == lround(height * 10))
 	{
@@ -68,7 +70,7 @@ void PhysicsObject::updatePendulum()
 	this->VelocityAmount = 2 * this->Ekin;
 
 	this->R = this->G * cos(this->alpha);
-	this->F = -this->G * cos(this->alpha) * 0.05f;
+	this->F = -this->G * cos(this->alpha);
 	this->ZP = VelocityAmount / this->lenght;
 	this->setAcceleration(sin(this->alpha) * (R + ZP), -cos(this->alpha) * (abs(R) + abs(ZP)));
 
@@ -90,7 +92,7 @@ void PhysicsObject::updatePendulum()
 
 void PhysicsObject::updateObject()
 {
-	a += 1;
+
 	this->Velocity.y += this->G;
 	this->Velocity.x += this->Acceleration.x;
 	this->Velocity.y += this->Acceleration.y;
@@ -147,6 +149,11 @@ void PhysicsObject::setColor(sf::Color color)
 {
 	this->color = color;
 	this->object.setFillColor(color);
+}
+
+void PhysicsObject::setSimulationSpeed(float SimulationSpeed)
+{
+	this->SimulationSpeed = SimulationSpeed;
 }
 
 // get
