@@ -9,60 +9,65 @@
 #include <list>
 #include "PhysicsObject.h"
 #include "GUI.h"
-/*
-	Game Engine Class
-	Wrapper Class
-
-*/
 
 class Game
 {
 private:
-	//Variables
-	// GameObjects
-	// PhysicsObjPos
 
-	//Window
+	//-Window-//
 	sf::RenderWindow* window;
 	
-	sf::VideoMode videoMode;
+	//-Event-//
 	sf::Event event;
 
 	//Game Objects
 
 	std::list<PhysicsObject*> GameObjectsList;
 
-	std::list<GUI::Button> ButtonsList;
+
+	//--GUI--//	
 
 	sf::Font font;
-	//Private functions 
+
+	//-ButtonList-//
+	std::list<GUI::Button> ButtonsList;
+	//-SliderList-//
+	std::list<GUI::Slider> SliderList;
+
+	//--Private functions --//
+	//-Events-//
 	void pollEvents();
+
+	//-initilize-//
 	void initVariables();
 	void initWindow();
 	void initGameObjects();	
 	void initGUI();
+
+	//-update-//
 	void updateGameObjects();
 	void updateGUI();
+
 	void spawnPhysicsObject();
+
+
+	//--Private Variables --//
+	//Gravition//
 	const float G = .05f;
 
-
+	//-inputs-//
+	bool pressMouseLeft;
+	sf::Vector2i MousePosition;
 
 public:
-	//Constructors / Destructors
+	//-Constructors / Destructors-//
 	Game();
 	virtual ~Game();
 
-	//Accessors
+	//-Accessors-//
 	const bool running() const;
 	
-	sf::Vector2i MousePosition;
-	//Functions
-	
+	//--Functions called by main--//
 	void update();
 	void render();
-
-
-	bool pressMouseLeft;
-
 };

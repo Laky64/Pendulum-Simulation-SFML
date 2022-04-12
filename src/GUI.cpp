@@ -3,7 +3,7 @@
 #include "../include/GUI.h"
 #include "../include/Game.h"
 
-// Style
+//------Style------//
 
 std::map<std::string, float> GUI::Style::Button(std::initializer_list<std::string> list)
 {
@@ -104,14 +104,12 @@ std::map<std::string, float> GUI::Style::Text(std::initializer_list<std::string>
 	return a;
 }
 
-// Button
+//------Button------//
 
 // Constructor + Destructor
 
 GUI::Button::Button()
 {
-	this->testLine[0].color = sf::Color(255, 0, 0, 255);
-	this->testLine[1].color = sf::Color(255, 0, 0, 255);
 }
 
 GUI::Button::~Button()
@@ -161,9 +159,6 @@ void GUI::Button::render(sf::RenderWindow *window)
 	// Text
 	this->text.setFont(font);
 	window->draw(this->text);
-
-	// TestLine
-	window->draw(this->testLine, 2, sf::Lines);
 
 	// update MousePos
 	this->MousePos = sf::Mouse::getPosition(*window);
@@ -294,26 +289,227 @@ void GUI::Button::setText(std::string text, sf::Font font, std::map<std::string,
 	}
 }
 
-// Slider
+//------Slider------//
 
-void GUI::Slider::render()
+void GUI::Slider::render(sf::RenderWindow *window)
 {
+	// Bar
+	window->draw(this->Bar);
+
+	// Handle
+	window->draw(this->Handle);
+
+	// update MousePos
+	this->MousePos = sf::Mouse::getPosition(*window);
 }
 
 // Constructor + Destructor
-GUI::Slider::Slider()
+GUI::Slider::Slider(float rangeStart, float rangeEnd)
 {
+	this->rangeStart = rangeStart;
+	this->rangeEnd = rangeEnd;
+	this->value = rangeStart;
 }
 
 GUI::Slider::~Slider()
 {
 }
 
-void GUI::Slider::update()
+void GUI::Slider::interpolateStyleBar()
 {
+
+	for (auto v1 : this->currentStyleBar)
+	{
+		for (auto v2 : this->activeStyleBar)
+		{
+
+			if (v1.first == v2.first && this->currentStyleBar[v1.first] != this->activeStyleBar[v1.first])
+			{
+				this->currentStyleBar[v1.first] += ((this->activeStyleBar[v1.first] - this->currentStyleBar[v1.first]) / this->interpolationDuration);
+			}
+		}
+	}
+
+	changeStyleBar(this->currentStyleBar);
+}
+
+void GUI::Slider::setActiveStyleBar(std::map<std::string, float> a)
+{
+	if (lastActiveStyleBar != activeStyleBar)
+	{
+		this->currentStyleBar["interpolation"] = 1;
+	}
+	this->lastActiveStyleBar = this->activeStyleBar;
+	this->activeStyleBar = a;
+	this->activeStyleBar["interpolation"] = 2;
+}
+
+void GUI::Slider::changeStyleBar(std::map<std::string, float> a)
+{
+	this->currentStyleBar = a;
+	this->Bar.setFillColor(sf::Color(a["ColorR"], a["ColorG"], a["ColorB"], 255));
+	this->Bar.setSize(sf::Vector2f(a["sizeX"], a["sizeY"]));
+	this->Bar.setPosition(a["PositionX"], a["PositionY"]);
+	this->Bar.setOutlineThickness(a["OutlineThickness"]);
+	this->Bar.setOutlineColor(sf::Color(a["OutlineColorR"], a["OutlineColorG"], a["OutlineColorB"], 255));
+}
+
+void GUI::Slider::interpolateStyleHandle()
+{
+
+	for (auto v1 : this->currentStyleHandle)
+	{
+		for (auto v2 : this->activeStyleHandle)
+		{
+
+			if (v1.first == v2.first && this->currentStyleHandle[v1.first] != this->activeStyleHandle[v1.first])
+			{
+				this->currentStyleHandle[v1.first] += ((this->activeStyleHandle[v1.first] - this->currentStyleHandle[v1.first]) / this->interpolationDuration);
+			}
+		}
+	}
+
+	changeStyleHandle(this->currentStyleHandle);
+}
+
+void GUI::Slider::setActiveStyleHandle(std::map<std::string, float> a)
+{
+	if (lastActiveStyleHandle != activeStyleHandle)
+	{
+		this->currentStyleHandle["interpolation"] = 1;
+	}
+	this->lastActiveStyleHandle = this->activeStyleHandle;
+	this->activeStyleHandle = a;
+	this->activeStyleHandle["interpolation"] = 2;
+}
+
+void GUI::Slider::changeStyleHandle(std::map<std::string, float> a)
+{
+	this->currentStyleHandle = a;
+	this->Handle.setFillColor(sf::Color(a["ColorR"], a["ColorG"], a["ColorB"], 255));
+	this->Handle.setRadius(a["radius"]);
+	this->Handle.setOutlineThickness(a["OutlineThickness"]);
+	this->Handle.setOutlineColor(sf::Color(a["OutlineColorR"], a["OutlineColorG"], a["OutlineColorB"], 255));
+}
+
+void GUI::Slider::setStyleBar(std::map<std::string, float> a)
+{
+	this->styleBar = a;
+	this->currentStyleBar = a;
+	this->activeStyleBar = a;
+	this->lastActiveStyleBar = a;
+	this->HoverStyleBar = a;
+	this->changeStyleBar(a);
+}
+
+void GUI::Slider::setHoverStyleBar(std::map<std::string, float> a)
+{
+	this->HoverStyleBar = this->styleBar;
+	std::swap(this->HoverStyleBar, a);
+	this->HoverStyleBar.insert(a.begin(), a.end());
+}
+
+void GUI::Slider::setClickedStyleBar(std::map<std::string, float> a)
+{
+	this->ClickedStyleBar = this->styleBar;
+	std::swap(this->ClickedStyleBar, a);
+	this->ClickedStyleBar.insert(a.begin(), a.end());
+}
+
+void GUI::Slider::setStyleHandle(std::map<std::string, float> a)
+{
+	this->styleHandle = a;
+	this->currentStyleHandle = a;
+	this->activeStyleHandle = a;
+	this->lastActiveStyleHandle = a;
+	this->HoverStyleHandle = a;
+	this->changeStyleHandle(a);
+	this->Handle.setPosition(this->styleBar["PositionX"] - this->styleHandle["radius"], this->styleBar["PositionY"] + this->styleBar["sizeY"] / 2 - this->styleHandle["radius"]);
+}
+
+void GUI::Slider::setHoverStyleHandle(std::map<std::string, float> a)
+{
+	this->HoverStyleHandle = this->styleHandle;
+	std::swap(this->HoverStyleHandle, a);
+	this->HoverStyleHandle.insert(a.begin(), a.end());
+}
+
+void GUI::Slider::setClickedStyleHandle(std::map<std::string, float> a)
+{
+	this->ClickedStyleHandle = this->styleHandle;
+	std::swap(this->ClickedStyleHandle, a);
+	this->ClickedStyleHandle.insert(a.begin(), a.end());
+}
+
+void GUI::Slider::updateHandlePos()
+{
+	getValue();
+	this->setActiveStyleBar(this->ClickedStyleBar);
+	this->setActiveStyleHandle(this->ClickedStyleHandle);
+	xPos = MousePos.x - this->styleHandle["radius"];
+	if (xPos > this->styleBar["PositionX"] + this->styleBar["sizeX"] - this->styleHandle["radius"])
+	{
+		xPos = this->styleBar["PositionX"] + this->styleBar["sizeX"] - this->styleHandle["radius"];
+	}
+	else if (xPos < this->styleBar["PositionX"] - this->styleHandle["radius"])
+	{
+		xPos = this->styleBar["PositionX"] - this->styleHandle["radius"];
+	}
+	this->Handle.setPosition(xPos, this->styleBar["PositionY"] + this->styleBar["sizeY"] / 2 - this->styleHandle["radius"]);
+}
+
+bool GUI::Slider::update(bool MouseButton)
+{
+
+	if (ceilf(this->currentStyleBar["interpolation"] * 10.0) / 10.0 != ceilf(this->activeStyleBar["interpolation"] * 10.0) / 10.0)
+	{
+		this->interpolateStyleBar();
+		this->interpolateStyleHandle();
+	}
+	if (this->MousePos.x > styleBar["PositionX"] - styleBar["OutlineThickness"] && this->MousePos.x < styleBar["PositionX"] + styleBar["sizeX"] + styleBar["OutlineThickness"] && this->MousePos.y > styleBar["PositionY"] - styleBar["OutlineThickness"] && this->MousePos.y < styleBar["PositionY"] + styleBar["sizeY"] + styleBar["OutlineThickness"])
+	{
+
+		if (MouseButton)
+		{
+			this->updateHandlePos();
+			handleActive = true;
+		}
+		else
+		{
+			this->setActiveStyleBar(this->HoverStyleBar);
+			this->setActiveStyleHandle(this->HoverStyleHandle);
+		}
+		if (MouseButton != leftMouseButton)
+		{
+			if (MouseButton)
+			{
+				leftMouseButton = MouseButton;
+				return true;
+			}
+			leftMouseButton = MouseButton;
+		}
+	}
+	else
+	{
+		if (MouseButton && handleActive)
+		{
+			this->updateHandlePos();
+		}
+		else
+		{
+			handleActive = false;
+			this->setActiveStyleBar(this->styleBar);
+			this->setActiveStyleHandle(this->styleHandle);
+		}
+	}
+	return false;
 }
 
 float GUI::Slider::getValue()
 {
-	return 0.0f;
+	value = (xPos - styleBar["PositionX"]) / styleBar["sizeX"] + 0.052;
+	value = abs(ceilf(this->value * 1000.0) / 1000.0);
+	value = abs(rangeStart - rangeEnd) * value + rangeStart;
+	std::cout << value << "\n";
+	return value;
 }
