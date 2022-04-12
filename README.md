@@ -3,9 +3,13 @@
 A simple simulation of a pendulum using the SFML library
 
 ## Features
+### Pendulum
 - simulates a pendulum
 - shows acceleration vectors
-- simple UI
+### GUI
+- Buttons
+ - styling system
+ - animation: interpolation between styles (default/hovered/clicked)
 
 ## Installation
 
