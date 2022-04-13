@@ -1,5 +1,6 @@
 #include <iostream>
 #include "../include/Prefab.h"
+#include "math.h"
 
 Prefab::Prefab()
 {
