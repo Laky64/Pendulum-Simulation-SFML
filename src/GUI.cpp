@@ -2,10 +2,11 @@
 #include "math.h"
 #include "../include/GUI.h"
 #include "../include/Game.h"
+#include "../include/Prefab.h"
 
 //------Style------//
 
-std::map<std::string, float> GUI::Style::Button(std::initializer_list<std::string> list)
+std::map<std::string, float> GUI::Style::Normal(std::initializer_list<std::string> list)
 {
 	// creates a Dictionary with all defiened style properties
 	std::map<std::string, float> a;
@@ -362,6 +363,7 @@ void GUI::Slider::render(sf::RenderWindow *window)
 // Constructor + Destructor
 GUI::Slider::Slider(float rangeStart, float rangeEnd)
 {
+
 	this->rangeStart = rangeStart;
 	this->rangeEnd = rangeEnd;
 	this->value = rangeStart;
@@ -516,7 +518,6 @@ void GUI::Slider::updateHandlePos()
 
 bool GUI::Slider::update(bool MouseButton)
 {
-
 	if (ceilf(this->currentStyleBar["interpolation"] * 10.0) / 10.0 != ceilf(this->activeStyleBar["interpolation"] * 10.0) / 10.0)
 	{
 		this->interpolateStyleBar();
@@ -558,7 +559,14 @@ float GUI::Slider::getValue()
 {
 	value = (xPos - styleBar["PositionX"]) / styleBar["sizeX"] + 0.052;
 	value = abs(ceilf(this->value * 1000.0) / 1000.0);
-	value = abs(rangeStart - rangeEnd) * value + rangeStart;
+	if (rangeStart <= rangeEnd)
+	{
+		value = abs(rangeStart - rangeEnd) * value + rangeStart;
+	}
+	else
+	{
+		value = abs(rangeEnd - rangeStart) * (1 - value) + rangeEnd;
+	}
 
 	return value;
 }
@@ -645,4 +653,32 @@ void GUI::Text::render(sf::RenderWindow *window)
 {
 	this->text.setFont(this->font);
 	window->draw(this->text);
+}
+
+GUI::Rect::Rect(std::map<std::string, float> a)
+{
+	this->rect.setFillColor(sf::Color(a["ColorR"], a["ColorG"], a["ColorB"], a["ColorA"]));
+	this->rect.setSize(sf::Vector2f(a["sizeX"], a["sizeY"]));
+	this->rect.setPosition(a["PositionX"], a["PositionY"]);
+	this->rect.setOutlineThickness(a["OutlineThickness"]);
+	this->rect.setOutlineColor(sf::Color(a["OutlineColorR"], a["OutlineColorG"], a["OutlineColorB"], a["ColorA"]));
+}
+
+void GUI::Rect::render(sf::RenderWindow *window)
+{
+	window->draw(this->rect);
+}
+
+GUI::Circle::Circle(std::map<std::string, float> a)
+{
+	this->circle.setFillColor(sf::Color(a["ColorR"], a["ColorG"], a["ColorB"], a["ColorA"]));
+	this->circle.setRadius(a["radius"]);
+	this->circle.setPosition(a["PositionX"], a["PositionY"]);
+	this->circle.setOutlineThickness(a["OutlineThickness"]);
+	this->circle.setOutlineColor(sf::Color(a["OutlineColorR"], a["OutlineColorG"], a["OutlineColorB"], a["ColorA"]));
+}
+
+void GUI::Circle::render(sf::RenderWindow *window)
+{
+	window->draw(this->circle);
 }

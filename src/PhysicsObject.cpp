@@ -24,8 +24,6 @@ PhysicsObject::PhysicsObject(float radius, float gravitationalAcceleration, floa
 	this->connectionTofixPoint[1].color = sf::Color(255, 255, 255, 255);
 
 	this->connectionTofixPoint[0].position = sf::Vector2f(fixPoint.x, fixPoint.y);
-
-	this->SimulationSpeed = 0;
 }
 
 PhysicsObject::~PhysicsObject()
@@ -149,11 +147,6 @@ void PhysicsObject::setColor(sf::Color color)
 {
 	this->color = color;
 	this->object.setFillColor(color);
-}
-
-void PhysicsObject::setSimulationSpeed(float SimulationSpeed)
-{
-	this->SimulationSpeed = SimulationSpeed;
 }
 
 // get

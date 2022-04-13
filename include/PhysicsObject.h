@@ -24,7 +24,7 @@ private:
 
 	//Pendulum
 	void updatePendulum();
-	const sf::Vector2i fixPoint = sf::Vector2i(700, 0);
+	const sf::Vector2i fixPoint = sf::Vector2i(720, 0);
 	float alpha;
 	sf::Vertex lineVectorG[2];
 	sf::Vertex lineVectorZP[2];
@@ -47,7 +47,7 @@ private:
 	sf::Vector2f startingPosition;
 
 
-	float SimulationSpeed;
+
 public:
 	//Constructors / Destructors
 	PhysicsObject(float radius, float gravitationalAcceleration, float mass);
@@ -73,7 +73,7 @@ public:
 	void setAcceleration(float x, float y);
 	void addAcceleration(float x, float y);
 	void setColor(sf::Color color);
-	void setSimulationSpeed(float SimulationSpeed);
+
 	
 	
 

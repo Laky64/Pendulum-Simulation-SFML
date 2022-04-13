@@ -9,6 +9,7 @@
 #include <list>
 #include "PhysicsObject.h"
 #include "GUI.h"
+#include "Prefab.h"
 
 class Game
 {
@@ -35,6 +36,13 @@ private:
 	std::list<GUI::Slider> SliderList;
 	//-TextList-//
 	std::list<GUI::Text> TextList;
+	//-Rect-//
+	std::list<GUI::Rect> RectList;
+	//-Circle-//
+	std::list<GUI::Circle> CircleList;
+
+	//-PrefabObject-//
+	Prefab prefab;
 
 
 	//--Private functions --//

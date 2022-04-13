@@ -14,10 +14,27 @@ namespace GUI {
 	
 	class Style {
 	public:
-		static std::map<std::string, float> Button(std::initializer_list<std::string> list);
+		static std::map<std::string, float> Normal(std::initializer_list<std::string> list);
 		static std::map<std::string, float> Text(std::initializer_list<std::string> list);
 
 	};	
+
+
+	class Rect {
+	private:
+		sf::RectangleShape rect;
+	public:
+		Rect(std::map<std::string, float> a);
+		void render(sf::RenderWindow* window);
+	};
+
+	class Circle {
+	private:
+		sf::CircleShape circle;
+	public:
+		Circle(std::map<std::string, float> a);
+		void render(sf::RenderWindow* window);
+	};
 
 	class Button
 	{
@@ -41,7 +58,7 @@ namespace GUI {
 		void interpolateStyle();
 		void changeStyle(std::map<std::string, float> a);
 		
-
+		
 	public:
 		//Constructors / Destructors
 		
