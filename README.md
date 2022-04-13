@@ -39,4 +39,5 @@ mingw32-make
 - start the .exe inside the build folder
 
 ## Usage
-- spawning and resetting by click buttons
+- Set angle and lenght of pendulum with the Sliders. 
+- Spawn and reset with buttons.
