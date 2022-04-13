@@ -7,9 +7,14 @@ A simple simulation of a pendulum using the SFML library
 - simulates a pendulum
 - shows acceleration vectors
 ### GUI
-- Buttons
- - styling system
- - animation: interpolation between styles (default/hovered/clicked)
++ Features
+  * styling system
+  * animation: interpolation between styles (default/hovered/clicked)
++ Elements
+  * Button  
+  * Slider
+  * Text
+
 
 ## Installation
 
