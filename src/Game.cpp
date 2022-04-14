@@ -89,7 +89,7 @@ void Game::initWindow()
     settings.antialiasingLevel = 8;
 
     this->window = new sf::RenderWindow(sf::VideoMode(1440, 1100), "Main", sf::Style::Close, settings);
-    this->window->setFramerateLimit(0);
+    this->window->setFramerateLimit(165);
 }
 
 void Game::initGameObjects()
