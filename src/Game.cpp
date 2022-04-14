@@ -7,6 +7,7 @@
 #include <map>
 #include <string>
 #include "math.h"
+#include <random>
 
 //----Constructor / Destructor----//
 
@@ -88,7 +89,7 @@ void Game::initWindow()
     settings.antialiasingLevel = 8;
 
     this->window = new sf::RenderWindow(sf::VideoMode(1440, 1100), "Main", sf::Style::Close, settings);
-    this->window->setFramerateLimit(165);
+    this->window->setFramerateLimit(0);
 }
 
 void Game::initGameObjects()
@@ -113,16 +114,16 @@ void Game::initGUI()
     spawnButton.setStyle(GUI::Style::Normal({"sizeX: 110",
                                              "sizeY: 60",
                                              "PositionX: 20",
-                                             "PositionY: 790",
-                                             "OutlineThickness: 2",
-                                             "Color: (200,200,200,100)",
+                                             "PositionY: 805",
+                                             "OutlineThickness: 0",
+                                             "Color: (234,249,217,100)",
                                              "OutlineColor: (30,30,30,255)"}));
     resetButton.setStyle(GUI::Style::Normal({"sizeX: 110",
                                              "sizeY: 60",
                                              "PositionX: 160",
-                                             "PositionY: 790",
-                                             "OutlineThickness: 2",
-                                             "Color: (200,200,200,100)",
+                                             "PositionY: 805",
+                                             "OutlineThickness: 0",
+                                             "Color: (109,114,195,100)",
                                              "OutlineColor: (30,30,30,255)"}));
 
     // set Hovered Style
@@ -239,31 +240,40 @@ void Game::initGUI()
     this->SliderList.push_back(lenghtSlider);
 
     //---Text---//
-    GUI::Text FPStext(this->window, "FPS:", this->font, GUI::Style::Text({"Size: 30", "Color: (0,0,0,255)", "LetterSpace: 1", "PositionX: Left", "PositionY: Bottom", "OffsetX: 15", "OffsetY: -15",
-
-                                                                          "OutlineColor: (50,50,50,200)", "OutlineThickness: 1"}));
+    GUI::Text FPStext(this->window, "FPS:", this->font, GUI::Style::Text({"Size: 30", "Color: (0,0,0,255)", "LetterSpace: 1", "PositionX: Left", "PositionY: Bottom", "OffsetX: 15", "OffsetY: -15"}));
     FPStext.name = "FPS";
     this->TextList.push_back(FPStext);
 
-    GUI::Text SliderAngle(this->window, "Angle", this->font, GUI::Style::Text({"Size: 25", "Color: (0,0,0,255)", "LetterSpace: 1", "PositionX: Left", "PositionY: Bottom", "OffsetX: 15", "OffsetY: -185",
-
-                                                                               "OutlineColor: (50,50,50,200)", "OutlineThickness: 1"}));
+    GUI::Text SliderAngle(this->window, "Angle", this->font, GUI::Style::Text({"Size: 25", "Color: (0,0,0,255)", "LetterSpace: 1", "PositionX: Left", "PositionY: Bottom", "OffsetX: 15", "OffsetY: -185"}));
     this->TextList.push_back(SliderAngle);
 
-    GUI::Text SliderLenght(this->window, "Lenght", this->font, GUI::Style::Text({"Size: 25", "Color: (20,20,20,255)", "LetterSpace: 1", "PositionX: Left", "PositionY: Bottom", "OffsetX: 15", "OffsetY: -105",
-
-                                                                                 "OutlineColor: (50,50,50,200)", "OutlineThickness: 1"}));
+    GUI::Text SliderLenght(this->window, "Lenght", this->font, GUI::Style::Text({"Size: 25", "Color: (20,20,20,255)", "LetterSpace: 1", "PositionX: Left", "PositionY: Bottom", "OffsetX: 15", "OffsetY: -105"}));
     this->TextList.push_back(SliderLenght);
 
     //--Empty--//
-    GUI::Rect GraphBackround(GUI::Style::Normal({"sizeX: 1432",
-                                                 "sizeY: 356",
-                                                 "PositionX: 4",
-                                                 "PositionY: 740",
-                                                 "OutlineThickness: 4",
-                                                 "Color: (255,255,255,100)",
-                                                 "OutlineColor: (30,30,30,100)"}));
-    this->RectList.push_back(GraphBackround);
+    GUI::Rect GUIBackround(GUI::Style::Normal({"sizeX: 300",
+                                               "sizeY: 356",
+                                               "PositionX: 4",
+                                               "PositionY: 740",
+                                               "OutlineThickness: 4",
+                                               "Color: (204,199,185,255)",
+                                               "OutlineColor: (30,30,30,100)"}));
+    this->RectList.push_back(GUIBackround);
+    GUI::Rect PendulumBackround(GUI::Style::Normal({"sizeX: 1432",
+                                                    "sizeY: 785",
+                                                    "PositionX: 4",
+                                                    "PositionY: 4",
+                                                    "OutlineThickness: 4",
+                                                    "Color: (39,39,39,255)",
+                                                    "OutlineColor: (30,30,30,100)"}));
+    this->RectList.push_back(PendulumBackround);
+
+    this->Background = new GUI::Rect(GUI::Style::Normal({"sizeX:" + std::to_string(1440 - 308),
+                                                         "sizeY:" + std::to_string(305),
+                                                         "PositionX:" + std::to_string(308),
+                                                         "PositionY:" + std::to_string(794),
+                                                         "Color: (39,39,39,255)"}));
+    this->Background->render(this->window);
 
     GUI::Circle FixPoint(GUI::Style::Normal({"radius: 5",
                                              "PositionX: 715",
@@ -285,8 +295,10 @@ void Game::update()
     this->pollEvents();
 
     // GUI
-    this->updateGUI();
-
+    if (MousePosition.x < 300 && MousePosition.y > 700)
+    {
+        this->updateGUI();
+    }
     // GameObjects
     this->updateGameObjects();
 }
@@ -295,9 +307,21 @@ void Game::update()
 void Game::updateGameObjects()
 {
     // update PhysicsObject
-    for (PhysicsObject *it : this->GameObjectsList)
+
+    for (std::pair<PhysicsObject *, Graph *> it : this->gameObjectsList)
     {
-        it->updateObject();
+        it.first->updateObject();
+        sf::Vector2f a = it.first->getVelocity();
+        it.second->update(sqrt(a.x * a.x + a.y * a.y));
+    }
+
+    //--Text--//
+    for (GUI::Text &it : this->TextList)
+    {
+        if (it.name == "FPS")
+        {
+            it.setString("FPS: " + std::to_string(int(this->fps)));
+        }
     }
 }
 
@@ -318,12 +342,15 @@ void Game::updateGUI()
             else if (it.functionName == "reset")
             {
                 // delete all Instances of Physicsobject
-                for (PhysicsObject *it : this->GameObjectsList)
+                for (std::pair<PhysicsObject *, Graph *> it : this->gameObjectsList)
                 {
-                    delete it;
+                    delete it.first;
+                    delete it.second;
                 }
                 // clear List of PhysicsObjects
-                this->GameObjectsList = {};
+                this->gameObjectsList = {};
+
+                this->Background->render(this->window);
             };
         }
     }
@@ -349,22 +376,13 @@ void Game::updateGUI()
             }
         }
     }
-
-    //--Text--//
-    for (GUI::Text &it : this->TextList)
-    {
-        if (it.name == "FPS")
-        {
-            it.setString("FPS: " + std::to_string(int(this->fps)));
-        }
-    }
 }
 
 //-spawn a new GameObject-//
 void Game::spawnPhysicsObject()
 {
     //--PhysicsObjects--//
-
+    this->Background->render(this->window);
     // create new PhysicsObject with Pointer
     PhysicsObject *ball = new PhysicsObject(20, 0.07f, 67);
 
@@ -372,24 +390,36 @@ void Game::spawnPhysicsObject()
     ball->setPosition(prefab.getPos().x, prefab.getPos().y);
 
     // set the Color
-    ball->setColor(sf::Color(150, 32, 56, 255));
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_real_distribution<float> dist(0.0, 255.0);
+
+    unsigned int r = dist(mt);
+    unsigned int g = dist(mt);
+    unsigned int b = dist(mt);
+    ball->setColor(sf::Color(r, g, b, 255));
 
     // Add object to List
-    this->GameObjectsList.push_back(ball);
+    int size = gameObjectsList.size() + 1;
+    int count = 0;
+    Graph *graph = new Graph(this->window, 308, 1440, 794 + (305 / size) * count, (305 / size), 8, sf::Color(r, g, b, 255));
+    this->gameObjectsList.insert({ball, graph});
+    // count++;
+    for (std::pair<PhysicsObject *, Graph *> it : this->gameObjectsList)
+    {
+
+        it.second->setPositions(308, 1440, 794 + (305.0 / size) * (count), (305.0 / size), 8);
+        it.second->clear(this->window);
+
+        count++;
+    }
 }
 
 //--render--// -> Called by main
 void Game::render()
 {
     // clear screen
-    this->window->clear(sf::Color(60, 60, 60, 255));
-
-    //--PhysicsObjects--//
-    for (PhysicsObject *it : this->GameObjectsList)
-    {
-
-        it->renderObject(this->window);
-    }
+    // this->window->clear(sf::Color(60, 60, 60, 255));
 
     //--Empty--//
     for (GUI::Rect &it : this->RectList)
@@ -399,6 +429,13 @@ void Game::render()
     for (GUI::Circle &it : this->CircleList)
     {
         it.render(this->window);
+    }
+
+    //--PhysicsObjects--//
+    for (std::pair<PhysicsObject *, Graph *> it : this->gameObjectsList)
+    {
+        it.first->renderObject(this->window);
+        it.second->render(this->window);
     }
 
     //----GUI----//

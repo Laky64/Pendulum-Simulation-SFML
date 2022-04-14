@@ -14,7 +14,6 @@ Prefab::Prefab()
 
 void Prefab::setPos(float xPos)
 {
-	std::cout << xPos << "\n";
 	this->xPos = xPos * this->lenght;
 	float width = this->lenght;
 	this->yPos = sin(acos(this->xPos * (1 / width) - 1)) * width;

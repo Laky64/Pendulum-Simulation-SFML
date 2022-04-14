@@ -10,6 +10,7 @@
 #include "PhysicsObject.h"
 #include "GUI.h"
 #include "Prefab.h"
+#include "Graph.h"
 
 class Game
 {
@@ -22,12 +23,12 @@ private:
 	sf::Event event;
 
 	//Game Objects
-
-	std::list<PhysicsObject*> GameObjectsList;
+	std::map<PhysicsObject*, Graph*> gameObjectsList;
 
 
 	//--GUI--//	
-
+	GUI::Rect* Background;
+	bool reset;
 	sf::Font font;
 
 	//-ButtonList-//

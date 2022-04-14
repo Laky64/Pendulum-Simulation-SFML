@@ -17,8 +17,8 @@ PhysicsObject::PhysicsObject(float radius, float gravitationalAcceleration, floa
 	this->lineVectorZP[0].color = sf::Color(0, 255, 0, 255);
 	this->lineVectorZP[1].color = sf::Color(0, 255, 0, 255);
 
-	this->lineVectorR[0].color = sf::Color(0, 0, 255, 255);
-	this->lineVectorR[1].color = sf::Color(0, 0, 255, 255);
+	this->lineVectorR[0].color = sf::Color(104, 158, 255, 255);
+	this->lineVectorR[1].color = sf::Color(104, 158, 255, 255);
 
 	this->connectionTofixPoint[0].color = sf::Color(255, 255, 255, 255);
 	this->connectionTofixPoint[1].color = sf::Color(255, 255, 255, 255);

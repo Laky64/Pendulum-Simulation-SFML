@@ -26,6 +26,9 @@ namespace GUI {
 	public:
 		Rect(std::map<std::string, float> a);
 		void render(sf::RenderWindow* window);
+		void setPosition(float X, float Y);
+		sf::Vector2f getPosition();
+		void setStyle(std::map<std::string, float> a);
 	};
 
 	class Circle {
@@ -34,6 +37,9 @@ namespace GUI {
 	public:
 		Circle(std::map<std::string, float> a);
 		void render(sf::RenderWindow* window);
+		void setPosition(float X, float Y);
+		sf::Vector2f getPosition();
+		void setStyle(std::map<std::string, float> a);
 	};
 
 	class Button
@@ -55,13 +61,13 @@ namespace GUI {
 		std::map<std::string, float> activeStyle;
 		float interpolationDuration = 20;
 		void setActiveStyle(std::map<std::string, float> a);
-		void interpolateStyle();
+		
 		void changeStyle(std::map<std::string, float> a);
 		
 		
 	public:
 		//Constructors / Destructors
-		
+		void interpolateStyle();
 		Button();
 		virtual ~Button();
 		bool update(bool MouseButton);
@@ -97,7 +103,7 @@ namespace GUI {
 		std::map<std::string, float> activeStyleBar;
 
 		void setActiveStyleBar(std::map<std::string, float> a);
-		void interpolateStyleBar();
+		
 		void changeStyleBar(std::map<std::string, float> a);
 
 
@@ -110,7 +116,7 @@ namespace GUI {
 		std::map<std::string, float> activeStyleHandle;
 
 		void setActiveStyleHandle(std::map<std::string, float> a);
-		void interpolateStyleHandle();
+		
 		void changeStyleHandle(std::map<std::string, float> a);
 
 		bool leftMouseButton = false;
@@ -123,7 +129,8 @@ namespace GUI {
 	public:
 		//Constructors / Destructors
 		Slider(float rangeStart, float rangeEnd);	
-
+		void interpolateStyleHandle();
+		void interpolateStyleBar();
 		virtual ~Slider();
 		bool update(bool MouseButton);
 		void render(sf::RenderWindow* window);

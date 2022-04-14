@@ -669,6 +669,25 @@ void GUI::Rect::render(sf::RenderWindow *window)
 	window->draw(this->rect);
 }
 
+void GUI::Rect::setPosition(float X, float Y)
+{
+	this->rect.setPosition(X, Y);
+}
+
+sf::Vector2f GUI::Rect::getPosition()
+{
+	return this->rect.getPosition();
+}
+
+void GUI::Rect::setStyle(std::map<std::string, float> a)
+{
+	this->rect.setFillColor(sf::Color(a["ColorR"], a["ColorG"], a["ColorB"], a["ColorA"]));
+	this->rect.setSize(sf::Vector2f(a["sizeX"], a["sizeY"]));
+	this->rect.setPosition(a["PositionX"], a["PositionY"]);
+	this->rect.setOutlineThickness(a["OutlineThickness"]);
+	this->rect.setOutlineColor(sf::Color(a["OutlineColorR"], a["OutlineColorG"], a["OutlineColorB"], a["ColorA"]));
+}
+
 GUI::Circle::Circle(std::map<std::string, float> a)
 {
 	this->circle.setFillColor(sf::Color(a["ColorR"], a["ColorG"], a["ColorB"], a["ColorA"]));
@@ -681,4 +700,23 @@ GUI::Circle::Circle(std::map<std::string, float> a)
 void GUI::Circle::render(sf::RenderWindow *window)
 {
 	window->draw(this->circle);
+}
+
+void GUI::Circle::setPosition(float X, float Y)
+{
+	this->circle.setPosition(X, Y);
+}
+
+sf::Vector2f GUI::Circle::getPosition()
+{
+	return this->circle.getPosition();
+}
+
+void GUI::Circle::setStyle(std::map<std::string, float> a)
+{
+	this->circle.setFillColor(sf::Color(a["ColorR"], a["ColorG"], a["ColorB"], a["ColorA"]));
+	this->circle.setRadius(a["radius"]);
+	this->circle.setPosition(a["PositionX"], a["PositionY"]);
+	this->circle.setOutlineThickness(a["OutlineThickness"]);
+	this->circle.setOutlineColor(sf::Color(a["OutlineColorR"], a["OutlineColorG"], a["OutlineColorB"], a["ColorA"]));
 }
