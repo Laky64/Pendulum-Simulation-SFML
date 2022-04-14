@@ -5,7 +5,8 @@ A simple simulation of a pendulum using the SFML library
 ## Features
 ### Pendulum
 - simulates a pendulum
-- shows acceleration vectors
+- shows acceleration vectors (gravity->red / centripetal->green / pendulum->blue)
+- draws velocity graph for each pendulum
 ### GUI
 + Features
   * styling system
@@ -39,5 +40,5 @@ mingw32-make
 - start the .exe inside the build folder
 
 ## Usage
-- Set angle and lenght of pendulum with the Sliders. 
-- Spawn and reset with buttons.
+- Set angle and lenght of pendulum with the Sliders.
+- Spawn and reset with buttons
