@@ -402,13 +402,13 @@ void Game::spawnPhysicsObject()
     // Add object to List
     int size = gameObjectsList.size() + 1;
     int count = 0;
-    Graph *graph = new Graph(this->window, 308, 1440, 794 + (305 / size) * count, (305 / size), 8, sf::Color(r, g, b, 255));
+    Graph *graph = new Graph(this->window, 308, 1440, 794 + (305 / size) * count, (305 / size), 7, sf::Color(r, g, b, 255));
     this->gameObjectsList.insert({ball, graph});
     // count++;
     for (std::pair<PhysicsObject *, Graph *> it : this->gameObjectsList)
     {
 
-        it.second->setPositions(308, 1440, 794 + (305.0 / size) * (count), (305.0 / size), 8);
+        it.second->setPositions(308, 1440, 794 + (305.0 / size) * (count), (305.0 / size), 7);
         it.second->clear(this->window);
 
         count++;

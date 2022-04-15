@@ -57,12 +57,10 @@ void PhysicsObject::updatePendulum()
 	this->Epot = height * this->G;
 	this->Ekin = (this->Emax - this->Epot);
 
-	if (lround(initialHeight * 10) == lround(height * 10))
+	if (lround(initialHeight * 30) <= lround(height * 30))
 	{
 		Velocity.x = 0;
 		Velocity.y = 0;
-
-		;
 	}
 
 	this->VelocityAmount = 2 * this->Ekin;
