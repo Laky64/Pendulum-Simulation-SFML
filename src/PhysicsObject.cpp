@@ -20,10 +20,30 @@ PhysicsObject::PhysicsObject(float radius, float gravitationalAcceleration, floa
 	this->lineVectorR[0].color = sf::Color(104, 158, 255, 255);
 	this->lineVectorR[1].color = sf::Color(104, 158, 255, 255);
 
+
+	lineVectorGArrow = sf::VertexArray(sf::LineStrip, 3);
+	lineVectorZPArrow = sf::VertexArray(sf::LineStrip, 3);
+	lineVectorRArrow = sf::VertexArray(sf::LineStrip, 3);
+
+	this->lineVectorGArrow[0].color = sf::Color(255, 0, 0, 255);
+	this->lineVectorGArrow[1].color = sf::Color(255, 0, 0, 255);
+	this->lineVectorGArrow[2].color = sf::Color(255, 0, 0, 255);
+
+
+	this->lineVectorZPArrow[0].color = sf::Color(0, 255, 0, 255);
+	this->lineVectorZPArrow[1].color = sf::Color(0, 255, 0, 255);
+	this->lineVectorZPArrow[2].color = sf::Color(0, 255, 0, 255);
+
+	this->lineVectorRArrow[0].color = sf::Color(104, 158, 255, 255);
+	this->lineVectorRArrow[1].color = sf::Color(104, 158, 255, 255);
+	this->lineVectorRArrow[2].color = sf::Color(104, 158, 255, 255);
+
 	this->connectionTofixPoint[0].color = sf::Color(255, 255, 255, 255);
 	this->connectionTofixPoint[1].color = sf::Color(255, 255, 255, 255);
 
 	this->connectionTofixPoint[0].position = sf::Vector2f(fixPoint.x, fixPoint.y);
+
+
 }
 
 PhysicsObject::~PhysicsObject()
@@ -44,6 +64,10 @@ void PhysicsObject::renderObject(sf::RenderWindow *window)
 	window->draw(lineVectorG, 2, sf::Lines);
 	window->draw(lineVectorZP, 2, sf::Lines);
 	window->draw(lineVectorR, 2, sf::Lines);
+
+	window->draw(lineVectorGArrow);
+	if (ZP > 0.01) { window->draw(lineVectorZPArrow); }
+	window->draw(lineVectorRArrow);
 }
 
 void PhysicsObject::updatePendulum()
@@ -75,9 +99,23 @@ void PhysicsObject::updatePendulum()
 	this->lineVectorZP[0].position = sf::Vector2f(this->Position.x + this->radius + sin(this->alpha) * ZP * 1000 + 25, this->Position.y + this->radius - cos(this->alpha) * abs(ZP) * 1000);
 	this->lineVectorR[0].position = sf::Vector2f(this->Position.x + this->radius + sin(this->alpha) * R * 1000 + 15, this->Position.y + this->radius - cos(this->alpha) * abs(R * 1000));
 
+	//Arrows
 	this->lineVectorG[1].position = sf::Vector2f(this->Position.x + this->radius + 15, this->Position.y + this->radius);
 	this->lineVectorZP[1].position = sf::Vector2f(this->Position.x + this->radius + 25, this->Position.y + this->radius);
 	this->lineVectorR[1].position = sf::Vector2f(this->Position.x + this->radius + 15, this->Position.y + this->radius);
+
+	this->lineVectorGArrow[0].position = sf::Vector2f(this->Position.x + this->radius + 10, this->Position.y + this->radius + this->G * 800);
+	this->lineVectorZPArrow[0].position = sf::Vector2f(this->Position.x + this->radius + sin(this->alpha) * (ZP) * 1000 - sin(this->alpha) * 15 + 25 - cos(alpha) * 5, this->Position.y + this->radius - cos(this->alpha) * abs(ZP) * 1000 + cos(this->alpha) * 15 - sin(alpha)*5);
+	this->lineVectorRArrow[0].position = sf::Vector2f(this->Position.x + this->radius + sin(this->alpha) * R * 1000 - sin(this->alpha) * 15 + 15 - cos(alpha) * 5, this->Position.y + this->radius - cos(this->alpha) * abs(R * 1000) + cos(this->alpha) * 15 - sin(alpha) * 5);
+
+
+	this->lineVectorGArrow[1].position = sf::Vector2f(this->Position.x + this->radius + 15, this->Position.y + this->radius + this->G * 1000);
+	this->lineVectorZPArrow[1].position = sf::Vector2f(this->Position.x + this->radius + sin(this->alpha) * ZP * 1000 + 25, this->Position.y + this->radius - cos(this->alpha) * abs(ZP) * 1000);
+	this->lineVectorRArrow[1].position = sf::Vector2f(this->Position.x + this->radius + sin(this->alpha) * R * 1000 + 15, this->Position.y + this->radius - cos(this->alpha) * abs(R * 1000));
+
+	this->lineVectorGArrow[2].position = sf::Vector2f(this->Position.x + this->radius + 20, this->Position.y + this->radius + this->G * 800);
+	this->lineVectorZPArrow[2].position = sf::Vector2f(this->Position.x + this->radius + sin(this->alpha) * (ZP) * 1000 - sin(this->alpha) * 15 + 25 + cos(alpha) * 5, this->Position.y + this->radius - cos(this->alpha) * abs(ZP) * 1000 + cos(this->alpha) * 15 + sin(alpha) * 5);
+	this->lineVectorRArrow[2].position = sf::Vector2f(this->Position.x + this->radius + sin(this->alpha) * R * 1000 - sin(this->alpha) * 15 + 15 + cos(alpha) * 5, this->Position.y + this->radius - cos(this->alpha) * abs(R * 1000) + cos(this->alpha) * 15 + sin(alpha) * 5);
 
 	// update Line Position of Connection to FixPoint
 	this->connectionTofixPoint[1].position = sf::Vector2f(this->Position.x + this->radius, this->Position.y + this->radius);
@@ -88,6 +126,7 @@ void PhysicsObject::updatePendulum()
 
 void PhysicsObject::updateObject()
 {
+
 
 	this->Velocity.y += this->G;
 	this->Velocity.x += this->Acceleration.x;
@@ -146,6 +185,7 @@ void PhysicsObject::setColor(sf::Color color)
 	this->color = color;
 	this->object.setFillColor(color);
 }
+
 
 // get
 

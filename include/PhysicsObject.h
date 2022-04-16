@@ -29,6 +29,10 @@ private:
 	sf::Vertex lineVectorG[2];
 	sf::Vertex lineVectorZP[2];
 	sf::Vertex lineVectorR[2];
+
+	sf::VertexArray lineVectorGArrow;
+	sf::VertexArray lineVectorZPArrow;
+	sf::VertexArray lineVectorRArrow;
 	sf::Vertex connectionTofixPoint[2];
 	float lenght;
 	float height;
